@@ -7,10 +7,16 @@ class Player : public Charge
 {
 private:
     sf::Vector2f speed;
-    double mass;
+    const double mass;
+    sf::CircleShape body;
 public:
-    Player(float radius = 100.0f, double charge = 10.0, double mass = 1.0, sf::Vector2i pos = sf::Vector2i(250.0, 250.0));
-    double getMass() const;
-    void setSpeed(const sf::Vector2f& speed);
+    Player(float radius = 100.0f, double charge = 10.0, double mass = 1.0, sf::Vector2f pos = sf::Vector2f(250.0, 250.0));
+    double getMass() const { return mass; }
+    double getRadius() const override { return body.getRadius(); }
+    sf::Vector2f getPosition() const override { return body.getPosition(); }
+    sf::Vector2f getSpeed() const { return speed; }
+    void setPosition(const sf::Vector2f& newPos) override { body.setPosition(newPos); }
+    void setSpeed(sf::Vector2f& newSpeed);
     void updateMovement(const sf::Vector2f& accelaration, const double deltaTime);
+    void draw(sf::RenderWindow& window) override { window.draw(body); }
 };

@@ -32,7 +32,7 @@ void PhysicsEngine::updatePlayer(Player &player, const double deltaTime, const s
         double riLengthSquared = ri.x * ri.x + ri.y * ri.y;
 
         // In real physics its divided by the cube of riLength
-        // For better gameplay I broke physics, only divided by the square :)
+        // For better gameplay I broke physics, only divided by the sqere :)
         // x component
         totalForce.x += obstacle.getElectricCharge() * (ri.x / (riLengthSquared * std::sqrt(riLengthSquared)));
         // y component
@@ -42,10 +42,14 @@ void PhysicsEngine::updatePlayer(Player &player, const double deltaTime, const s
     totalForce.x *= k * player.getElectricCharge();
     totalForce.y *= k * player.getElectricCharge();
 
+    // Subtract a friction force proportionally linked to the speed
+    totalForce.x -= (frictionCoeff * player.getSpeed().x / playerMaxSpeed) * player.getMass() * g;
+    totalForce.y -= (frictionCoeff * player.getSpeed().y / playerMaxSpeed) * player.getMass() * g;
 
     if (debug == 2)
         std::cout
-            << "total force:\tx: " << totalForce.x << "\ty: " << totalForce.y << std::endl;
+            << "total force:\t" << std::sqrt(totalForce.x * totalForce.x + totalForce.y * totalForce.y)
+            << "\t\tx: " << totalForce.x << "\ty: " << totalForce.y << std::endl;
 
     // To get acceleration divide force by mass
     sf::Vector2f acceleration(0.0, 0.0);
