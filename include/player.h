@@ -18,5 +18,5 @@ public:
     void setPosition(const sf::Vector2f& newPos) override { body.setPosition(newPos); }
     void setSpeed(sf::Vector2f& newSpeed);
     void updateMovement(const sf::Vector2f& accelaration, const double deltaTime);
-    void draw(sf::RenderWindow& window) override { window.draw(body); }
+    void draw(sf::RenderWindow& window)const override { window.draw(body); }
 };

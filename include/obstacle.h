@@ -13,5 +13,5 @@ public:
     double getRadius() const override { return body.getRadius(); }
     sf::Vector2f getPosition() const override { return body.getPosition(); }
     void setPosition(const sf::Vector2f& newPos) override { body.setPosition(newPos); }
-    void draw(sf::RenderWindow& window) override { window.draw(body); }
+    void draw(sf::RenderWindow& window) const override { window.draw(body); }
 };

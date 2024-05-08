@@ -32,7 +32,7 @@ void PhysicsEngine::updatePlayer(Player &player, const double deltaTime, const s
         double riLengthSquared = ri.x * ri.x + ri.y * ri.y;
 
         // In real physics its divided by the cube of riLength
-        // For better gameplay I broke physics, only divided by the sqere :)
+        // For better gameplay I broke physics, only divided by the square :)
         // x component
         totalForce.x += obstacle.getElectricCharge() * (ri.x / (riLengthSquared * std::sqrt(riLengthSquared)));
         // y component

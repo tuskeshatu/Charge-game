@@ -5,6 +5,7 @@
 #include "physics.h"
 #include "player.h"
 #include "obstacle.h"
+
 class Game
 {
 private:
@@ -12,6 +13,8 @@ private:
     sf::RenderWindow window;
     // Clock for measuring deltaTime
     sf::Clock clock;
+    // Determines if simulation runs or not
+    bool isPause = false;
     // deltaTime used for simulation
     double deltaTime = 0.0f;
     // Render deltaTime for framerate
@@ -20,6 +23,8 @@ private:
     PhysicsEngine physics;
     // Vector of obstacles in game
     std::vector<Obstacle> obstacles;
+    // Vector of drawable references
+    std::vector<const sf::Drawable*> drawables;
     // Player in the game
     Player player;
     // Handles input from player

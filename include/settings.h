@@ -1,4 +1,5 @@
 #pragma once
+#include <chrono>
 
 // DEBUG LEVELS:
 // 0:   None
@@ -21,3 +22,6 @@ const float playerMaxSpeed = 500.0f;
 
 // Arrow width when drawing out with mouse
 const float arrowWidth = 5.0f;
+
+// Key stick value in milliseconds
+const double keyStickDuration = 75;

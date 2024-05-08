@@ -14,6 +14,7 @@ extern const char targetFramerate;
 extern const float windowWidth;
 extern const float windowHeight;
 extern const float arrowWidth;
+extern const double keyStickDuration;
 
 // Create window
 Game::Game()
@@ -45,17 +46,27 @@ void Game::handleEvent()
 // Handles input from player
 void Game::handleInput()
 {
-    while (sf::Keyboard::isKeyPressed(sf::Keyboard::P))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::P))
     {
-        pause();
+        sf::Clock stickyKey;
+        while (stickyKey.getElapsedTime().asMilliseconds() < keyStickDuration);
+        if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Key::P))
+            isPause = !isPause;
     }
+    
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
     {
-        sf::Vector2i mousePos = sf::Mouse::getPosition(window);
         sf::Vector2f zeroSpeed(0.0f, 0.0f);
         player.setSpeed(zeroSpeed);
-        player.setPosition(sf::Vector2f((float)mousePos.x, (float)mousePos.y));
+        sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+        player.setPosition(sf::Vector2f(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y)));
     }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
+    {
+        sf::Vector2f zeroSpeed(0.0f, 0.0f);
+        player.setSpeed(zeroSpeed);
+    }
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
     {
         terminate();
@@ -69,7 +80,7 @@ void Game::handleInput()
         mousePos.y = sf::Mouse::getPosition(window).y;
         addObstacle(Obstacle(7.0f, -1500.0f, mousePos, sf::Color::Blue));
     }
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Middle))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
     {
         sf::Vector2f mousePos;
         mousePos.x = sf::Mouse::getPosition(window).x;
@@ -91,6 +102,13 @@ void Game::render()
     // TODO: Don't draw every obstacle every frame
     for (Obstacle obstacle : obstacles)
         obstacle.draw(window);
+    for (const sf::Drawable *drawablePtr : drawables)
+    {
+        if (const sf::RectangleShape *rectangle = dynamic_cast<const sf::RectangleShape *>(drawablePtr))
+        {
+            window.draw(*rectangle);
+        }
+    }
     player.draw(window);
     window.display();
 }
@@ -120,13 +138,13 @@ void Game::setStartSpeed()
     sf::RectangleShape arrow(sf::Vector2f(0.0f, arrowWidth));
     arrow.setFillColor(sf::Color::Magenta);
     arrow.setOrigin(0.0f, arrowWidth / 2);
+    drawables.push_back(&arrow);
+
     while (sf::Mouse::isButtonPressed((sf::Mouse::Left)))
     {
         handleEvent();
         handleInput();
         render();
-        window.draw(arrow);
-        window.display();
         arrow.setPosition(player.getPosition());
         arrow.setSize(sf::Vector2f(std::sqrt(startSpeed.x * startSpeed.x + startSpeed.y * startSpeed.y), arrowWidth));
         float angle = std::atan2((sf::Mouse::getPosition(window).y - player.getPosition().y), (sf::Mouse::getPosition(window).x - player.getPosition().x)) * 180.0f / M_PI;
@@ -137,6 +155,7 @@ void Game::setStartSpeed()
             std::cout << "Start speed:\t" << std::sqrt(startSpeed.x * startSpeed.x + startSpeed.y * startSpeed.y)
                       << "\t\tx: " << startSpeed.x << "\ty: " << startSpeed.y << std::endl;
     }
+    drawables.pop_back();
     player.setSpeed(startSpeed);
 }
 
@@ -150,6 +169,7 @@ void Game::terminate()
 // Pauses everything
 void Game::pause()
 {
+    handleEvent();
     clock.restart();
 }
 
@@ -157,18 +177,21 @@ void Game::pause()
 void Game::run()
 {
     setStartSpeed();
-
     clock.restart();
     while (window.isOpen())
     {
-        while (!window.hasFocus() && window.isOpen())
+        if (isPause)
             pause();
+
+        if (!window.hasFocus())
+            isPause = true;
 
         deltaTime = clock.restart().asSeconds();
         renderDeltaTime += deltaTime;
         handleEvent();
         handleInput();
-        physics.updatePlayer(player, deltaTime, obstacles);
+        if (!isPause)
+            physics.updatePlayer(player, deltaTime, obstacles);
 
         if (1 / renderDeltaTime < targetFramerate)
         {
