@@ -8,12 +8,26 @@ extern const char debug;
 extern const float playerMaxSpeed;
 
 // Create body of player
-Player::Player(float radius, double charge, double mass, sf::Vector2f pos)
+Player::Player(const sf::RenderWindow& window, float radius, double charge, double mass, sf::Vector2f pos)
     : Charge(charge), speed(0.0f, 0.0f), mass(mass), body(radius)
 {
-    body.setPosition(pos);
+    setPosition(window, pos);
     body.setOrigin(radius, radius);
     body.setFillColor(sf::Color::Red);
+}
+
+void Player::setPosition(const sf::RenderWindow &window, sf::Vector2f &newPos)
+{
+    if (newPos.x < 0)
+        newPos.x = 0;
+    else if (newPos.x > window.getSize().x)
+        newPos.x = window.getSize().x;
+    if (newPos.y < 0)
+        newPos.y = 0;
+    else if (newPos.y > window.getSize().y)
+        newPos.y = window.getSize().y;
+
+    body.setPosition(newPos);
 }
 
 // Speed setter

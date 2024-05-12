@@ -7,19 +7,22 @@
 #include "obstacle.h"
 #include "player.h"
 #include "charge.h"
+#include "level.h"
+#include "levelManager.h"
 #include "settings.h"
 
 extern const char debug;
-extern const char targetFramerate;
+extern const unsigned int targetFramerate;
 extern const float windowWidth;
 extern const float windowHeight;
 extern const float arrowWidth;
 extern const double keyStickDuration;
 
 // Create window
-Game::Game()
-    : window(sf::VideoMode(windowWidth, windowHeight), "Charge game", sf::Style::Default), player(Player(7.0, 1.0, 15.0, sf::Vector2f(500.0f, 250.0f)))
+Game::Game(Level loadedLevel)
+    : window(sf::VideoMode(loadedLevel.getSize().x, loadedLevel.getSize().y), "Charge game: " + loadedLevel.getName(), sf::Style::Default), player(Player(window, 7.0, 1.0, 15.0, loadedLevel.getPlayerStartPos())), level(loadedLevel), physics(window, isPause, player, level.getObstacles())
 {
+    window.setFramerateLimit(targetFramerate);
 }
 
 // Handles window events such as close, resize...
@@ -37,6 +40,26 @@ void Game::handleEvent()
         case sf::Event::Resized:
             resizeView(evnt);
             break;
+        case sf::Event::KeyPressed:
+            if (evnt.key.code == sf::Keyboard::Escape)
+                isPause = !isPause;
+            if (evnt.key.code == sf::Keyboard::S)
+            {
+                level.setPlayerStartPos(player.getPosition());
+                LevelManager::getInstance()->saveLevel(level);
+                LevelManager::getInstance()->updateIndex();
+            }
+            if (evnt.key.code == sf::Keyboard::R)
+            {
+                terminate();
+                Game newGame;
+                if (!sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
+                {
+                    newGame.level = LevelManager::getInstance()->loadLevel(0);
+                }
+                newGame.run();
+            }
+
         default:
             break;
         }
@@ -46,53 +69,51 @@ void Game::handleEvent()
 // Handles input from player
 void Game::handleInput()
 {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::P))
-    {
-        sf::Clock stickyKey;
-        while (stickyKey.getElapsedTime().asMilliseconds() < keyStickDuration);
-        if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Key::P))
-            isPause = !isPause;
-    }
+    if (!window.hasFocus())
+        return;
     
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
     {
         sf::Vector2f zeroSpeed(0.0f, 0.0f);
         player.setSpeed(zeroSpeed);
         sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-        player.setPosition(sf::Vector2f(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y)));
+        sf::Vector2f mousePosFloat(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+        player.setPosition(window, mousePosFloat);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
     {
         sf::Vector2f zeroSpeed(0.0f, 0.0f);
         player.setSpeed(zeroSpeed);
     }
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
-    {
-        terminate();
-        Game newGame;
-        newGame.run();
-    }
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
     {
         sf::Vector2f mousePos;
         mousePos.x = sf::Mouse::getPosition(window).x;
         mousePos.y = sf::Mouse::getPosition(window).y;
-        addObstacle(Obstacle(7.0f, -1500.0f, mousePos, sf::Color::Blue));
+        level.addObstacle(Obstacle(window, 7.0f, -1500.0f, mousePos));
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
     {
         sf::Vector2f mousePos;
         mousePos.x = sf::Mouse::getPosition(window).x;
         mousePos.y = sf::Mouse::getPosition(window).y;
-        addObstacle(Obstacle(7.0f, 1500.0f, mousePos, sf::Color::Green));
+        level.addObstacle(Obstacle(window, 7.0f, 1500.0f, mousePos));
     }
 }
 
-void Game::resizeView(sf::Event evnt)
+void Game::resizeView(const sf::Event &evnt)
 {
     sf::FloatRect visibleArea(0.0f, 0.0f, evnt.size.width, evnt.size.height);
     window.setView(sf::View(visibleArea));
+    level.setSize(window.getSize());
+}
+
+void Game::resizeView(const sf::Vector2u &newSize)
+{
+    window.setSize(newSize);
+    sf::FloatRect visibleArea(0.0f, 0.0f, newSize.x, newSize.y);
+    window.setView(sf::View(visibleArea));
+    level.setSize(window.getSize());
 }
 
 // Render method
@@ -100,34 +121,19 @@ void Game::render()
 {
     window.clear();
     // TODO: Don't draw every obstacle every frame
-    for (Obstacle obstacle : obstacles)
+    for (Obstacle obstacle : level.getObstacles())
         obstacle.draw(window);
     for (const sf::Drawable *drawablePtr : drawables)
-    {
-
-        if (const sf::RectangleShape *rectangle = dynamic_cast<const sf::RectangleShape *>(drawablePtr))
-        {
-            window.draw(*drawablePtr);
-        }
-    }
+        window.draw(*drawablePtr);
     player.draw(window);
     window.display();
-}
-
-// Add object to game instance
-void Game::addObstacle(Obstacle newObstacle)
-{
-    // obstacles.insert(obstacles.begin(), newObstacle);
-    obstacles.push_back(newObstacle);
-    if (debug == 3)
-        std::cout << "obstacle count:\t" << obstacles.size() << std::endl;
 }
 
 // Set starting speed for player from mouse input
 void Game::setStartSpeed()
 {
     bool isMouseOnPlayer = std::abs(sf::Mouse::getPosition(window).x - player.getPosition().x) < player.getRadius() && std::abs(sf::Mouse::getPosition(window).y - player.getPosition().y) < player.getRadius();
-    while (!(sf::Mouse::isButtonPressed((sf::Mouse::Left)) && isMouseOnPlayer))
+    while (!(sf::Mouse::isButtonPressed((sf::Mouse::Left)) && isMouseOnPlayer) && window.isOpen())
     {
         handleEvent();
         handleInput();
@@ -164,44 +170,33 @@ void Game::setStartSpeed()
 void Game::terminate()
 {
     window.close();
-    obstacles.clear();
-}
-
-// Pauses everything
-void Game::pause()
-{
-    handleEvent();
-    clock.restart();
+    level.clearObstacles();
 }
 
 // Run method with game loop
 void Game::run()
 {
+    resizeView(level.getSize());
+    sf::Vector2f playerStartPos(level.getPlayerStartPos());
+    player.setPosition(window, playerStartPos);
     setStartSpeed();
     clock.restart();
     while (window.isOpen())
     {
-        if (isPause)
-            pause();
-
         if (!window.hasFocus())
             isPause = true;
 
         deltaTime = clock.restart().asSeconds();
-        renderDeltaTime += deltaTime;
         handleEvent();
         handleInput();
         if (!isPause)
-            physics.updatePlayer(player, deltaTime, obstacles);
+            physics.updatePlayer(deltaTime);
 
-        if (1 / renderDeltaTime < targetFramerate)
+        if (debug == 1)
         {
-            if (debug == 1)
-            {
-                std::cout << "fps:\t" << 1 / renderDeltaTime << std::endl;
-            }
-            renderDeltaTime = 0;
-            render();
+            std::cout << "fps:\t" << 1 / renderDeltaTime << std::endl;
         }
+        renderDeltaTime = 0;
+        render();
     }
 }

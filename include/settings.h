@@ -7,11 +7,12 @@
 // 2:   Print speed and force acting on player
 // 3:   Print number of obstacles
 // 4:   Print starting speed vector dragged out with mouse
+// 5:   Debug LevelManager: level loading/saving
 
-const char debug = 2;
+const char debug = 5;
 
 // Target framerate for drawing frames
-const char targetFramerate = 60;
+const unsigned int targetFramerate = 60;
 
 // Window height setting
 const float windowHeight = 512.0f;

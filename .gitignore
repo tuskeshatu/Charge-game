@@ -2,7 +2,6 @@
 .vscode/*
 .vscode/tasks.json
 .vscode/launch.json
-*.json
 
 # Makefile because of compiler path mismatch
 Makefile

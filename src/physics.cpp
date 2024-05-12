@@ -8,11 +8,12 @@
 
 extern const char debug;
 
-PhysicsEngine::PhysicsEngine(const float coulombConst, const float frictionCoeff, const float g) : k(coulombConst), frictionCoeff(frictionCoeff), g(g)
+PhysicsEngine::PhysicsEngine(const sf::RenderWindow &window, bool &isPause, Player &player, const std::vector<Obstacle> &obstacles, const float coulombConst, const float frictionCoeff, const float g)
+    : window(window), isPause(isPause), player(player), obstacles(obstacles), k(coulombConst), frictionCoeff(frictionCoeff), g(g)
 {
 }
 
-void PhysicsEngine::updatePlayer(Player &player, const double deltaTime, const std::vector<Obstacle> &obstacles)
+const sf::Vector2f PhysicsEngine::calculateElectricForce() const
 {
     // Calculate force vector for each obstacle with the player and sum them
     // Formula: F(r) = k * q_player sum(q_obstacle * (ri / abs(ri)^3))
@@ -42,14 +43,46 @@ void PhysicsEngine::updatePlayer(Player &player, const double deltaTime, const s
     totalForce.x *= k * player.getElectricCharge();
     totalForce.y *= k * player.getElectricCharge();
 
+    return totalForce;
+}
+
+const sf::Vector2f PhysicsEngine::calculateFrictionForce() const
+{
+    return sf::Vector2f((frictionCoeff * player.getSpeed().x / playerMaxSpeed) * player.getMass() * g,
+                        (frictionCoeff * player.getSpeed().y / playerMaxSpeed) * player.getMass() * g);
+}
+
+void PhysicsEngine::checkCollision()
+{
+    const sf::Vector2f playerPos(player.getPosition());
+    for (const Obstacle &obstacle : obstacles)
+    {
+        sf::Vector2f obstaclePos(obstacle.getPosition());
+        if ((playerPos.x - obstaclePos.x) * (playerPos.x - obstaclePos.x) + (playerPos.y - obstaclePos.y) * (playerPos.y - obstaclePos.y) <= (player.getRadius() + obstacle.getRadius()) * (player.getRadius() + obstacle.getRadius()))
+            isPause = true;
+    }
+    sf::Vector2f windowSize(window.getSize());
+    sf::Vector2f playerSpeed(player.getSpeed());
+    if (playerPos.x < 0 || playerPos.x > windowSize.x)
+        playerSpeed.x = -playerSpeed.x;
+    if (playerPos.y < 0 || playerPos.y > windowSize.y)
+        playerSpeed.y = -playerSpeed.y;
+
+    player.setSpeed(playerSpeed);
+}
+
+void PhysicsEngine::updatePlayer(const double deltaTime)
+{
+    sf::Vector2f totalForce(0.0, 0.0);
+
+    totalForce += calculateElectricForce();
+
     // Subtract a friction force proportionally linked to the speed
-    totalForce.x -= (frictionCoeff * player.getSpeed().x / playerMaxSpeed) * player.getMass() * g;
-    totalForce.y -= (frictionCoeff * player.getSpeed().y / playerMaxSpeed) * player.getMass() * g;
+    totalForce -= calculateFrictionForce();
 
     if (debug == 2)
-        std::cout
-            << "total force:\t" << std::sqrt(totalForce.x * totalForce.x + totalForce.y * totalForce.y)
-            << "\t\tx: " << totalForce.x << "\ty: " << totalForce.y << std::endl;
+        std::cout << "total force:\t" << std::sqrt(totalForce.x * totalForce.x + totalForce.y * totalForce.y)
+                  << "\t\tx: " << totalForce.x << "\ty: " << totalForce.y << std::endl;
 
     // To get acceleration divide force by mass
     sf::Vector2f acceleration(0.0, 0.0);
@@ -58,4 +91,5 @@ void PhysicsEngine::updatePlayer(Player &player, const double deltaTime, const s
 
     // Update player movement
     player.updateMovement(acceleration, deltaTime);
+    checkCollision();
 }

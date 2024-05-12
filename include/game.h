@@ -1,16 +1,22 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include <memory>
 
 #include "physics.h"
 #include "player.h"
 #include "obstacle.h"
+#include "level.h"
 
 class Game
 {
 private:
     // Instance of window
     sf::RenderWindow window;
+    // Player in the game
+    Player player;
+    // Level currently loaded
+    Level level;
+    // Vector of drawable references
+    std::vector<const sf::Drawable *> drawables;
     // Clock for measuring deltaTime
     sf::Clock clock;
     // Determines if simulation runs or not
@@ -21,12 +27,6 @@ private:
     double renderDeltaTime = 0.0f;
     // Connected physics engine
     PhysicsEngine physics;
-    // Vector of obstacles in game
-    std::vector<Obstacle> obstacles;
-    // Vector of drawable references
-    std::vector<const sf::Drawable*> drawables;
-    // Player in the game
-    Player player;
     // Handles input from player
     void handleInput();
     // Renders every object ??
@@ -34,20 +34,18 @@ private:
     // Handles window events such as close, resize...
     void handleEvent();
     // Handles resize event
-    void resizeView(sf::Event);
+    void resizeView(const sf::Event &evnt);
+    void resizeView(const sf::Vector2u &newSize);
     // Set starting speed for player from mouse input
     void setStartSpeed();
+
 public:
     // Constructor
-    Game();
+    Game(Level loadedLevel = Level());
     // Destructor
     ~Game() { terminate(); }
     // Main game loop
     void run();
-    // Add object to game instance
-    void addObstacle(Obstacle);
     // Terminate: close window and free resources
     void terminate();
-    // Pauses everything
-    void pause();
 };
