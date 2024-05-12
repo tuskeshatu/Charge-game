@@ -104,9 +104,10 @@ void Game::render()
         obstacle.draw(window);
     for (const sf::Drawable *drawablePtr : drawables)
     {
+
         if (const sf::RectangleShape *rectangle = dynamic_cast<const sf::RectangleShape *>(drawablePtr))
         {
-            window.draw(*rectangle);
+            window.draw(*drawablePtr);
         }
     }
     player.draw(window);
