@@ -9,7 +9,6 @@ class LevelManager
 {
 private:
     std::vector<std::string> loadables;
-    static LevelManager *instance;
 
     LevelManager();
     ~LevelManager();
@@ -20,5 +19,6 @@ public:
     void updateIndex() const;
     Level loadLevel(const std::string &levelName) const;
     Level loadLevel(const size_t &levelIndex) const;
+    Level loadLevel() const { return Level(); }
     void saveLevel(const Level &level);
 };

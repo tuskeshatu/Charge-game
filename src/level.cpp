@@ -10,15 +10,15 @@
 
 extern const char debug;
 
-Level::Level(const std::string &levelName, const sf::Vector2u &levelSize, const std::vector<Obstacle> &obstacles, const sf::Vector2f &playerStartPos)
+Level::Level(const std::string &levelName, const sf::Vector2u &levelSize, const std::vector<std::shared_ptr<Obstacle>> &obstacles, const sf::Vector2f &playerStartPos)
     : name(levelName), size(levelSize), obstacles(obstacles), playerStartPos(playerStartPos)
 {
 }
 
 // Add obstacle to level
-void Level::addObstacle(const Obstacle &newObstacle)
+void Level::addObstacle(const Obstacle newObstacle)
 {
-    obstacles.push_back(newObstacle);
+    obstacles.push_back(std::make_shared<Obstacle>(newObstacle));
     if (debug == 3)
         std::cout << "obstacle count:\t" << obstacles.size() << std::endl;
 }

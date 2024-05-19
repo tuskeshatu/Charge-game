@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <memory>
 
 #include "levelManager.h"
 #include "nlohmann\json.hpp"
@@ -11,14 +12,10 @@
 
 extern const char debug;
 
-LevelManager *LevelManager::instance = nullptr;
-
 LevelManager *LevelManager::getInstance()
 {
-    if (instance == nullptr)
-        instance = new LevelManager();
-
-    return instance;
+    static LevelManager instance;
+    return &instance;
 }
 
 LevelManager::LevelManager()
@@ -30,6 +27,32 @@ LevelManager::LevelManager()
     {
         if (debug == 5)
             std::cout << "Couldn't locate index.txt..." << std::endl;
+        // Check if the "levels" directory exists
+        if (!std::filesystem::exists("levels"))
+        {
+            // Create the "levels" directory
+            std::filesystem::create_directory("levels");
+            if (debug == 5)
+                std::cout << "Created \"levels\" directory" << std::endl;
+        }
+
+        // Check if the "index.txt" file exists inside the "levels" directory
+        std::ifstream indexFile("levels/index.txt");
+        if (!indexFile)
+        {
+            // Create the "index.txt" file inside the "levels" directory
+            std::ofstream newIndexFile("levels/index.txt");
+            if (!newIndexFile)
+            {
+                if (debug == 5)
+                    std::cout << "Couldn't create 'index.txt' file" << std::endl;
+                return;
+            }
+            newIndexFile.close();
+            if (debug == 5)
+                std::cout << "Created 'index.txt' file" << std::endl;
+        }
+        indexFile.close();
         return;
     }
     // If yes load loadables
@@ -70,7 +93,6 @@ void LevelManager::updateIndex() const
 LevelManager::~LevelManager()
 {
     updateIndex();
-    delete this;
 }
 
 Level LevelManager::loadLevel(const std::string &levelName) const
@@ -90,7 +112,7 @@ Level LevelManager::loadLevel(const std::string &levelName) const
         // Read name, size, playerStartPos and fill obstacles
         std::string name = jsonData["name"];
         sf::Vector2u size(jsonData["size"]["x"], jsonData["size"]["y"]);
-        std::vector<Obstacle> obstacles;
+        std::vector<std::shared_ptr<Obstacle>> obstacles;
         for (const auto &obstacleData : jsonData["obstacles"])
         {
             double charge = obstacleData["charge"];
@@ -98,7 +120,7 @@ Level LevelManager::loadLevel(const std::string &levelName) const
             double radius = obstacleData["radius"];
             Obstacle obstacle(radius, charge, position);
 
-            obstacles.push_back(obstacle);
+            obstacles.push_back(std::make_shared<Obstacle>(obstacle));
         }
 
         sf::Vector2f playerStartPos(jsonData["playerStartPos"]["x"], jsonData["playerStartPos"]["y"]);
@@ -148,10 +170,10 @@ void LevelManager::saveLevel(const Level &level)
     for (const auto &obstacle : level.getObstacles())
     {
         nlohmann::json obstacleData;
-        obstacleData["charge"] = obstacle.getElectricCharge();
-        obstacleData["position"]["x"] = obstacle.getPosition().x;
-        obstacleData["position"]["y"] = obstacle.getPosition().y;
-        obstacleData["radius"] = obstacle.getRadius();
+        obstacleData["charge"] = obstacle.get()->getElectricCharge();
+        obstacleData["position"]["x"] = obstacle.get()->getBody().getPosition().x;
+        obstacleData["position"]["y"] = obstacle.get()->getBody().getPosition().y;
+        obstacleData["radius"] = obstacle.get()->getBody().getRadius();
 
         jsonData["obstacles"].push_back(obstacleData);
     }

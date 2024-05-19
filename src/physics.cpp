@@ -5,16 +5,23 @@
 #include "obstacle.h"
 #include "physics.h"
 #include "settings.h"
+#include "level.h"
 
 extern const char debug;
 
-PhysicsEngine::PhysicsEngine(const sf::RenderWindow &window, bool &isPause, Player &player, const std::vector<Obstacle> &obstacles, const float coulombConst, const float frictionCoeff, const float g)
-    : window(window), isPause(isPause), player(player), obstacles(obstacles), k(coulombConst), frictionCoeff(frictionCoeff), g(g)
+extern sf::RenderWindow window;
+extern Player player;
+extern Level level;
+extern bool isPause;
+
+PhysicsEngine::PhysicsEngine(const float coulombConst, const float frictionCoeff, const float g)
+    : k(coulombConst), frictionCoeff(frictionCoeff), g(g)
 {
 }
 
 const sf::Vector2f PhysicsEngine::calculateElectricForce() const
 {
+    
     // Calculate force vector for each obstacle with the player and sum them
     // Formula: F(r) = k * q_player sum(q_obstacle * (ri / abs(ri)^3))
     // Where ri is a vector pointing from the obstacle to the player
@@ -23,10 +30,10 @@ const sf::Vector2f PhysicsEngine::calculateElectricForce() const
     // Calculate force vector for each obstacle with the player and sum them
     // Formula: F(r) = k * q_player sum(q_obstacle * (ri / abs(ri)^3))
     // Where ri is a vector pointing from the obstacle to the player
-    for (const Obstacle &obstacle : obstacles)
+    for (const std::shared_ptr<Obstacle> &obstacle : level.getObstacles())
     {
         // r vector pointing from the obstacle to the player
-        sf::Vector2f ri = player.getPosition() - obstacle.getPosition();
+        sf::Vector2f ri = player.getBody().getPosition() - obstacle.get()->getBody().getPosition();
         // Devide ri by 1000 to get realistic distances
         ri.x /= 1000;
         ri.y /= 1000;
@@ -35,9 +42,9 @@ const sf::Vector2f PhysicsEngine::calculateElectricForce() const
         // In real physics its divided by the cube of riLength
         // For better gameplay I broke physics, only divided by the square :)
         // x component
-        totalForce.x += obstacle.getElectricCharge() * (ri.x / (riLengthSquared * std::sqrt(riLengthSquared)));
+        totalForce.x += obstacle.get()->getElectricCharge() * (ri.x / (riLengthSquared * std::sqrt(riLengthSquared)));
         // y component
-        totalForce.y += obstacle.getElectricCharge() * (ri.y / (riLengthSquared * std::sqrt(riLengthSquared)));
+        totalForce.y += obstacle.get()->getElectricCharge() * (ri.y / (riLengthSquared * std::sqrt(riLengthSquared)));
     }
     // Multiply the sum to get total force
     totalForce.x *= k * player.getElectricCharge();
@@ -54,11 +61,11 @@ const sf::Vector2f PhysicsEngine::calculateFrictionForce() const
 
 void PhysicsEngine::checkCollision()
 {
-    const sf::Vector2f playerPos(player.getPosition());
-    for (const Obstacle &obstacle : obstacles)
+    const sf::Vector2f playerPos(player.getBody().getPosition());
+    for (const std::shared_ptr<Obstacle> &obstacle : level.getObstacles())
     {
-        sf::Vector2f obstaclePos(obstacle.getPosition());
-        if ((playerPos.x - obstaclePos.x) * (playerPos.x - obstaclePos.x) + (playerPos.y - obstaclePos.y) * (playerPos.y - obstaclePos.y) <= (player.getRadius() + obstacle.getRadius()) * (player.getRadius() + obstacle.getRadius()))
+        sf::Vector2f obstaclePos(obstacle.get()->getBody().getPosition());
+        if ((playerPos.x - obstaclePos.x) * (playerPos.x - obstaclePos.x) + (playerPos.y - obstaclePos.y) * (playerPos.y - obstaclePos.y) <= (player.getBody().getRadius() + obstacle.get()->getBody().getRadius()) * (player.getBody().getRadius() + obstacle.get()->getBody().getRadius()))
             isPause = true;
     }
     sf::Vector2f windowSize(window.getSize());
@@ -71,7 +78,7 @@ void PhysicsEngine::checkCollision()
     player.setSpeed(playerSpeed);
 }
 
-void PhysicsEngine::updatePlayer(const double deltaTime)
+void PhysicsEngine::updatePlayer()
 {
     sf::Vector2f totalForce(0.0, 0.0);
 
@@ -90,6 +97,6 @@ void PhysicsEngine::updatePlayer(const double deltaTime)
     acceleration.y = totalForce.y / player.getMass();
 
     // Update player movement
-    player.updateMovement(acceleration, deltaTime);
+    player.updateMovement(acceleration);
     checkCollision();
 }

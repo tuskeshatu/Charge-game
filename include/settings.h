@@ -9,20 +9,17 @@
 // 4:   Print starting speed vector dragged out with mouse
 // 5:   Debug LevelManager: level loading/saving
 
-const char debug = 5;
+const char debug = 1;
 
 // Target framerate for drawing frames
 const unsigned int targetFramerate = 60;
 
 // Window height setting
-const float windowHeight = 512.0f;
-const float windowWidth = 1024.f;
+const unsigned windowHeight = 512.0f;
+const unsigned windowWidth = 1024.f;
 
 // Max speed for player
 const float playerMaxSpeed = 500.0f;
 
 // Arrow width when drawing out with mouse
 const float arrowWidth = 5.0f;
-
-// Key stick value in milliseconds
-const double keyStickDuration = 75;

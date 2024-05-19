@@ -4,11 +4,12 @@
 #include "settings.h"
 
 extern const char debug;
+extern sf::RenderWindow window;
 
 Obstacle::Obstacle(const sf::RenderWindow &window, float radius, double charge, sf::Vector2f pos)
     : Charge(charge), body(radius)
 {
-    setPosition(window, pos);
+    setPosition(pos);
     body.setOrigin(radius, radius);
     if (charge < 0)
         body.setFillColor(sf::Color::Blue);
@@ -32,7 +33,7 @@ Obstacle::Obstacle(float radius, double charge, sf::Vector2f pos)
         body.setFillColor(sf::Color::White);
 }
 
-void Obstacle::setPosition(const sf::RenderWindow &window, sf::Vector2f &newPos)
+void Obstacle::setPosition(sf::Vector2f &newPos)
 {
     if (newPos.x < 0)
         newPos.x = 0;

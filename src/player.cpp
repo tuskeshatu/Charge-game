@@ -6,17 +6,20 @@
 
 extern const char debug;
 extern const float playerMaxSpeed;
+extern float deltaTime;
+
+extern sf::RenderWindow window;
 
 // Create body of player
-Player::Player(const sf::RenderWindow& window, float radius, double charge, double mass, sf::Vector2f pos)
+Player::Player(float radius, double charge, double mass, sf::Vector2f pos)
     : Charge(charge), speed(0.0f, 0.0f), mass(mass), body(radius)
 {
-    setPosition(window, pos);
+    setPosition(pos);
     body.setOrigin(radius, radius);
     body.setFillColor(sf::Color::Red);
 }
 
-void Player::setPosition(const sf::RenderWindow &window, sf::Vector2f &newPos)
+void Player::setPosition(sf::Vector2f &newPos)
 {
     if (newPos.x < 0)
         newPos.x = 0;
@@ -45,7 +48,7 @@ void Player::setSpeed(sf::Vector2f &newSpeed)
 }
 
 // Updates speed with acceleration and deltaTime
-void Player::updateMovement(const sf::Vector2f &acceleration, double deltaTime)
+void Player::updateMovement(const sf::Vector2f &acceleration)
 {
     sf::Vector2f newSpeed(speed.x + acceleration.x * deltaTime, speed.y += acceleration.y * deltaTime);
     setSpeed(newSpeed);
@@ -55,8 +58,8 @@ void Player::updateMovement(const sf::Vector2f &acceleration, double deltaTime)
                   << speed.x << "\ty: " << speed.y << "\t\t";
 
     sf::Vector2f deltaPos(0.0, 0.0);
-    deltaPos.x = speed.x * deltaTime;
-    deltaPos.y = speed.y * deltaTime;
+    deltaPos.x = speed.x * std::min(deltaTime, 0.0165f);
+    deltaPos.y = speed.y * std::min(deltaTime, 0.0165f);
 
     // Update players position with deltaPos
     body.move(deltaPos);
