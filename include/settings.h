@@ -10,20 +10,57 @@
 // 5:   Debug LevelManager: level loading/saving
 // 6:   Display menu items
 
-const char debug = 1;
+const char debug = 0;
 
 // Target framerate for drawing frames
+/**
+ * @brief The target framerate for the application.
+ *
+ * This constant represents the desired framerate for the application. It is used to control the rate at which
+ * frames are rendered and updated.
+ */
 const unsigned int targetFramerate = 60;
 
-// Window height setting
+// Window settings
+
+/**
+ * @brief The default height of the application window.
+ *
+ * This constant represents the height of the application window in pixels.
+ */
 const unsigned windowHeight = 512.0f;
+
+/**
+ * @brief The default width of the application window.
+ *
+ * This constant represents the width of the application window in pixels.
+ */
 const unsigned windowWidth = 1024.f;
 
-// Max speed for player
+/**
+ * @brief The maximum speed for the player.
+ *
+ * This constant represents the maximum speed that the player can gain.
+ * It is needed due to limitations of numerical physics calculation methods.
+ */
 const float playerMaxSpeed = 500.0f;
 
-// Arrow width when drawing out with mouse
+/**
+ * @brief The width of the arrow when drawing out with the mouse.
+ *
+ * This constant represents the width of the arrow when it is being drawn out with the mouse.
+ */
 const float arrowWidth = 5.0f;
 
-// Character sizes for texts
+/**
+ * @brief The size of the menu title.
+ *
+ * This constant represents the size of the menu title text.
+ */
 const unsigned menuTitleSize = 72;
+
+// Level name max character limit
+/**
+ * @brief The maximum number of characters allowed for a level name.
+ */
+const unsigned levelNameCharLimit = 12;

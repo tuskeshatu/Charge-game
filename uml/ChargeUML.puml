@@ -1,0 +1,113 @@
+@startuml
+
+
+
+
+
+/' Objects '/
+
+abstract class Charge {
+	+Charge(const double charge)
+	-electricCharge : double
+	+getElectricCharge() : double {query}
+	+{abstract} getBody() : std::shared_ptr<sf::CircleShape>& {query}
+	+{abstract} setPosition(sf::Vector2f& newPos) : void
+}
+
+
+class Level {
+	+Level(const std::string& levelName, const sf::Vector2u& levelSize, const std::vector<std::shared_ptr<Obstacle>>& obstacles, const sf::Vector2f& playerStartPos)
+	+setName(const std::string& newName) : bool
+	-playerStartPos : sf::Vector2f
+	+getPlayerStartPos() : sf::Vector2f& {query}
+	-size : sf::Vector2u
+	+getSize() : sf::Vector2u& {query}
+	-name : std::string
+	+getName() : std::string& {query}
+	-obstacles : std::vector<std::shared_ptr<Obstacle>>
+	+getObstacles() : std::vector<std::shared_ptr<Obstacle>>& {query}
+	+addObstacle(const std::shared_ptr<Obstacle>& newObstacle) : void
+	+clearObstacles() : void
+	+removeObstacle(size_t idx) : void
+	+setPlayerStartPos(const sf::Vector2f& newPos) : void
+	+setSize(const sf::Vector2u& newSize) : void
+}
+
+
+class LevelManager {
+	-LevelManager()
+	-~LevelManager()
+	+loadLevel(const std::string& levelName) : Level {query}
+	+loadLevel(const size_t& levelIndex) : Level {query}
+	+loadLevel() : Level {query}
+	+{static} getInstance() : LevelManager*
+	+deleteLevel(const std::string& levelName) : bool
+	-loadables : std::vector<std::string>
+	+getLoadables() : std::vector<std::string>& {query}
+	+saveLevel(const Level& level) : void
+	+updateIndex() : void {query}
+}
+
+
+class Obstacle {
+	+Obstacle(const float radius, const double charge, const sf::Vector2f& pos)
+	-body : std::shared_ptr<sf::CircleShape>
+	+getBody() : std::shared_ptr<sf::CircleShape>& {query}
+	+setPosition(sf::Vector2f& newPos) : void
+}
+
+
+class PhysicsEngine {
+	+PhysicsEngine(const float coulombConst, const float frictionCoeff, const float g)
+	-frictionCoeff : const float
+	-g : const float
+	-k : const float
+	-calculateElectricForce() : sf::Vector2f {query}
+	-calculateFrictionForce() : sf::Vector2f {query}
+	-checkCollision() : void
+	+updatePlayer() : void
+}
+
+
+class Player {
+	+Player(float radius, double charge, double mass, sf::Vector2f pos)
+	-mass : const double
+	+getMass() : double {query}
+	+getSpeed() : sf::Vector2f {query}
+	-speed : sf::Vector2f
+	-body : std::shared_ptr<sf::CircleShape>
+	+getBody() : std::shared_ptr<sf::CircleShape>& {query}
+	+setPosition(sf::Vector2f& newPos) : void
+	+setSpeed(const sf::Vector2f& newSpeed) : void
+	+updateMovement(const sf::Vector2f& acceleration) : void
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+.Charge <|-- .Obstacle
+
+
+.Charge <|-- .Player
+
+
+
+
+
+/' Aggregation relationships '/
+
+.Level *-- .Obstacle
+
+
+
+
+
+
+/' Nested objects '/
+
+
+
+@enduml

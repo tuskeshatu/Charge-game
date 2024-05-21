@@ -12,15 +12,17 @@
 
 extern const char debug;
 
+// Get instance of singleton LevelManager
 LevelManager *LevelManager::getInstance()
 {
     static LevelManager instance;
     return &instance;
 }
 
+// Constructor
 LevelManager::LevelManager()
 {
-    // See if levels.txt (collection of loadable levels) exists
+    // See if levels.txt (index of loadable levels) exists
     std::ifstream loadablesFile;
     loadablesFile.open("levels/index.txt");
     if (!loadablesFile)
@@ -48,6 +50,7 @@ LevelManager::LevelManager()
                     std::cout << "Couldn't create 'index.txt' file" << std::endl;
                 return;
             }
+            // Close index file
             newIndexFile.close();
             if (debug == 5)
                 std::cout << "Created 'index.txt' file" << std::endl;
@@ -66,6 +69,13 @@ LevelManager::LevelManager()
     loadablesFile.close();
 }
 
+// Destructor updates index when destroying LevelManager
+LevelManager::~LevelManager()
+{
+    updateIndex();
+}
+
+// Update index file based on loadables
 void LevelManager::updateIndex() const
 {
     // Open levels.txt for writing
@@ -79,7 +89,7 @@ void LevelManager::updateIndex() const
     }
 
     // Write loadables to the file, separated by newline
-    for (const auto &levelName : loadables)
+    for (const std::string &levelName : loadables)
     {
         loadablesFile << levelName << "\n";
         if (debug == 5)
@@ -90,11 +100,7 @@ void LevelManager::updateIndex() const
         std::cout << "Finished saving index.txt" << std::endl;
 }
 
-LevelManager::~LevelManager()
-{
-    updateIndex();
-}
-
+// Loads a level by name
 Level LevelManager::loadLevel(const std::string &levelName) const
 {
     // Look for level to be loaded in loadables
@@ -112,21 +118,31 @@ Level LevelManager::loadLevel(const std::string &levelName) const
         // Read name, size, playerStartPos and fill obstacles
         std::string name = jsonData["name"];
         sf::Vector2u size(jsonData["size"]["x"], jsonData["size"]["y"]);
+        
+        // Create obstacles to be filled
         std::vector<std::shared_ptr<Obstacle>> obstacles;
+
+        // Auto because type names are confusing with this library
+        // Load fields of each obstacle into obstacle object
         for (const auto &obstacleData : jsonData["obstacles"])
         {
+            // Load fields
             double charge = obstacleData["charge"];
             sf::Vector2f position(obstacleData["position"]["x"], obstacleData["position"]["y"]);
             double radius = obstacleData["radius"];
+            
+            // Construct obstacle object
             Obstacle obstacle(radius, charge, position);
-
+            // Make shared pointer and push to obstacles
             obstacles.push_back(std::make_shared<Obstacle>(obstacle));
         }
 
+        // Load playerstartpos
         sf::Vector2f playerStartPos(jsonData["playerStartPos"]["x"], jsonData["playerStartPos"]["y"]);
-
+        // Construct level and return it
         return Level(levelName, size, obstacles, playerStartPos);
     }
+    // If error occured throw runtime error
     else
     {
         throw std::runtime_error("LevelManager: Level not found: " + levelName + ".json");
@@ -135,9 +151,13 @@ Level LevelManager::loadLevel(const std::string &levelName) const
         std::cout << "Loaded level: " + levelName << std::endl;
 }
 
+// Load level by index
 Level LevelManager::loadLevel(const size_t &levelIndex) const
 {
+    // Create level to be returned
     Level retLevel;
+    // Catch errors occurring from overindexing, non-existent files etc...
+    // Return empty level if error occured
     try
     {
         retLevel = loadLevel(loadables.at(levelIndex));
@@ -171,9 +191,9 @@ void LevelManager::saveLevel(const Level &level)
     {
         nlohmann::json obstacleData;
         obstacleData["charge"] = obstacle.get()->getElectricCharge();
-        obstacleData["position"]["x"] = obstacle.get()->getBody().getPosition().x;
-        obstacleData["position"]["y"] = obstacle.get()->getBody().getPosition().y;
-        obstacleData["radius"] = obstacle.get()->getBody().getRadius();
+        obstacleData["position"]["x"] = obstacle.get()->getBody()->getPosition().x;
+        obstacleData["position"]["y"] = obstacle.get()->getBody()->getPosition().y;
+        obstacleData["radius"] = obstacle.get()->getBody()->getRadius();
 
         jsonData["obstacles"].push_back(obstacleData);
     }
@@ -189,4 +209,29 @@ void LevelManager::saveLevel(const Level &level)
         std::cout << "Saved level: " + level.getName() << std::endl;
 
     levelFile.close();
+}
+
+// Delete a level by providing level name
+const bool LevelManager::deleteLevel(const std::string &levelName)
+{
+    // Look for levelName in loadables with iterator
+    // Auto because of complicated type name of iterators
+    auto it = std::find(loadables.begin(), loadables.end(), levelName);
+
+    // If end was reached without finding the level return false
+    if (it == loadables.end())
+    {
+        return false;
+    }
+
+    // Remove levelName from loadables
+    loadables.erase(it);
+
+    // Delete the corresponding JSON file
+    std::string filePath = "./levels/" + levelName + ".json";
+    if (std::remove(filePath.c_str()) != 0) {
+        throw std::runtime_error("LevelManager: Failed to delete level file: " + levelName + ".json");
+    }
+
+    return true;
 }
