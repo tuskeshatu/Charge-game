@@ -184,7 +184,7 @@ void handleGameEvent()
             // R resets based on modifyer keys
             if (evnt.key.code == sf::Keyboard::R)
             {
-                // LCtrl + R: If in edito mode, allows player to not reset level, but set start speed
+                // LCtrl + R: If in editor mode, this allows the player to not reset level, but set start speed
                 if (isEditorMode && sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
                 {
                     setStartSpeed();
