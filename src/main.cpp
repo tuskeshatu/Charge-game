@@ -4,6 +4,7 @@
 #include <cmath>
 #include <memory>
 #include <algorithm>
+#include <exception>
 
 #include "obstacle.h"
 #include "player.h"
@@ -18,9 +19,10 @@ extern const unsigned int targetFramerate;
 extern const unsigned windowWidth;
 extern const unsigned windowHeight;
 extern const float arrowWidth;
+extern const unsigned menuTitleSize;
 
 // Instance of window
-sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Charge game: Main menu", sf::Style::Titlebar | sf::Style::Close);
+sf::RenderWindow window;
 // Player in the game
 Player player;
 // Level currently loaded
@@ -37,24 +39,12 @@ float deltaTime = 0.0f;
 double renderDeltaTime = 0.0f;
 // Connected physics engine
 PhysicsEngine physics;
+// Font for the whole game
+sf::Font font;
 
 void runGame();
 void resizeView(const sf::Vector2u &newSize);
-
-// Resets drawables, window and player
-void startGame()
-{
-    resizeView(level.getSize());
-    window.setTitle("Charge game: " + level.getName());
-    sf::Vector2f playerStartPos = level.getPlayerStartPos();
-    player.setPosition(playerStartPos);
-    drawables.clear();
-    for (const std::shared_ptr<Obstacle> &obstacle : level.getObstacles())
-    {
-        drawables.push_back(&obstacle.get()->getBody());
-    }
-    drawables.push_back(&player.getBody());
-}
+void startGame();
 
 // Frees all resources, closes window
 void terminate()
@@ -78,7 +68,7 @@ void resizeView(const sf::Vector2u &newSize)
 }
 
 // Handles window events such as close, resize...
-void handleEvent()
+void handleGameEvent()
 {
     sf::Event evnt;
     while (window.pollEvent(evnt))
@@ -120,8 +110,28 @@ void handleEvent()
     }
 }
 
+void handleMenuEvent()
+{
+    sf::Event evnt;
+    while (window.pollEvent(evnt))
+    {
+        switch (evnt.type)
+        {
+        case sf::Event::Closed:
+            exit(0);
+            break;
+            // TODO: resize event handle
+        case sf::Event::Resized:
+            resizeView(evnt);
+            break;
+        default:
+            break;
+        }
+    }
+}
+
 // Handles input from player
-void handleInput()
+void handleGameInput()
 {
     if (!window.hasFocus())
         return;
@@ -162,7 +172,7 @@ void handleInput()
 // Render method
 void render()
 {
-    window.clear();
+    window.clear(sf::Color::Black);
     for (const sf::Drawable *drawablePtr : drawables)
         window.draw(*drawablePtr);
 
@@ -175,8 +185,8 @@ void setStartSpeed()
     bool isMouseOnPlayer = std::abs(sf::Mouse::getPosition(window).x - player.getBody().getPosition().x) < player.getBody().getRadius() && std::abs(sf::Mouse::getPosition(window).y - player.getBody().getPosition().y) < player.getBody().getRadius();
     while (!(sf::Mouse::isButtonPressed((sf::Mouse::Left)) && isMouseOnPlayer) && window.isOpen())
     {
-        handleEvent();
-        handleInput();
+        handleGameEvent();
+        handleGameInput();
         render();
         isMouseOnPlayer = std::abs(sf::Mouse::getPosition(window).x - player.getBody().getPosition().x) < player.getBody().getRadius() && std::abs(sf::Mouse::getPosition(window).y - player.getBody().getPosition().y) < player.getBody().getRadius();
     }
@@ -189,8 +199,8 @@ void setStartSpeed()
 
     while (sf::Mouse::isButtonPressed((sf::Mouse::Left)))
     {
-        handleEvent();
-        handleInput();
+        handleGameEvent();
+        handleGameInput();
         render();
         arrow.setPosition(player.getBody().getPosition());
         arrow.setSize(sf::Vector2f(std::sqrt(startSpeed.x * startSpeed.x + startSpeed.y * startSpeed.y), arrowWidth));
@@ -218,11 +228,8 @@ void runGame()
 
         deltaTime = gameClock.restart().asSeconds();
 
-        if (debug == 1)
-            std::cout << "dT:\t" << deltaTime << std::endl;
-
-        handleEvent();
-        handleInput();
+        handleGameEvent();
+        handleGameInput();
         if (!isPause)
             physics.updatePlayer();
 
@@ -230,17 +237,115 @@ void runGame()
     }
 }
 
+// Resets drawables, window and player
+void startGame()
+{
+    window.close();
+    window.create(sf::VideoMode(level.getSize().x, level.getSize().y), "Charge game: " + level.getName(), sf::Style::Titlebar | sf::Style::Close);
+    window.clear(sf::Color::Black);
+    sf::Vector2f playerStartPos = level.getPlayerStartPos();
+    player.setPosition(playerStartPos);
+    drawables.clear();
+    // Player is first in drawables
+    drawables.push_back(&player.getBody());
+    for (const std::shared_ptr<Obstacle> &obstacle : level.getObstacles())
+    {
+        drawables.push_back(&obstacle.get()->getBody());
+    }
+
+    runGame();
+}
+
+void runMainMenu()
+{
+    std::shared_ptr<sf::Text> menuTitle = std::make_shared<sf::Text>(sf::Text("Charge game", font));
+    menuTitle->setFillColor(sf::Color::Green);
+    menuTitle->setCharacterSize(menuTitleSize);
+    menuTitle->setOrigin(menuTitle->getLocalBounds().width / 2.0f, menuTitle->getLocalBounds().height / 2.0f);
+    menuTitle->setPosition(windowWidth / 2.0f, windowHeight / 4.0f);
+    drawables.push_back(menuTitle.get());
+
+    std::vector<std::shared_ptr<sf::Text>> menuItems;
+    sf::Text menuItemTemplate("Empty Slot", font);
+    menuItemTemplate.setCharacterSize(20);
+    menuItemTemplate.setFillColor(sf::Color::White);
+
+    // Get loadable level names
+    const std::vector<std::string> &levels = LevelManager::getInstance()->getLoadables();
+
+    // Create menu items for each level
+    for (size_t i = 0; i < std::min(levels.size(), size_t(6)); i++)
+    {
+        sf::Text menuItem = menuItemTemplate;
+        menuItem.setString(levels[i]);
+        menuItem.setOrigin(menuItem.getGlobalBounds().width / 2.0f, menuItem.getGlobalBounds().height / 2.0f);
+        menuItem.setPosition((windowWidth - 3 * 200) / 2.0f + 100 + (i % 3 * 200), windowHeight / 2.0f + (i / 3) * 50);
+        menuItems.push_back(std::make_shared<sf::Text>(menuItem));
+    }
+
+    // Fill the rest of the grid with empty slots
+    for (size_t i = levels.size(); i < 6; i++)
+    {
+        sf::Text menuItem = menuItemTemplate;
+        menuItem.setOrigin(menuItem.getGlobalBounds().width / 2.0f, menuItem.getGlobalBounds().height / 2.0f);
+        // Setup grid for levels
+        menuItem.setPosition((windowWidth - 3 * 200) / 2.0f + 100 + (i % 3 * 200), windowHeight / 2.0f + (i / 3) * 50);
+        menuItems.push_back(std::make_shared<sf::Text>(menuItem));
+    }
+
+    // Push every menu item to drawables
+    for (const std::shared_ptr<sf::Text> &menuItem : menuItems)
+    {
+        drawables.push_back(menuItem.get());
+    }
+
+    while (window.isOpen())
+    {
+        handleMenuEvent();
+        render();
+        if (debug == 6)
+            for (size_t i = 0; i < menuItems.size(); i++)
+            {
+                std::cout << "Menu item " << i << ":\tx: " << menuItems[i]->getPosition().x << "\ty: " << menuItems[i]->getPosition().y << std::endl;
+            }
+
+        // Check if any menu item is clicked
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+        {
+            sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+            for (size_t i = 0; i < menuItems.size(); i++)
+            {
+                if (menuItems[i].get()->getGlobalBounds().contains(mousePos.x, mousePos.y))
+                {
+                    if (menuItems[i].get()->getString() == "Empty Slot")
+                        level = Level();
+                    else
+                        level = LevelManager::getInstance()->loadLevel(levels[i]);
+
+                    startGame();
+                }
+            }
+        }
+    }
+}
+
+void startMainMenu()
+{
+    window.close();
+    window.create(sf::VideoMode(windowWidth, windowHeight), "Charge game: Main menu", sf::Style::Titlebar | sf::Style::Close);
+    drawables.clear();
+
+    runMainMenu();
+}
+
 int main()
 {
     window.setFramerateLimit(targetFramerate);
-    window.setSize(sf::Vector2u(windowWidth, windowHeight));
-    window.setTitle("Charge game: Main menu");
 
-    level = LevelManager::getInstance()->loadLevel(0);
+    if (!font.loadFromFile("fonts/joystix monospace.otf"))
+        throw std::runtime_error("Couldn't locate font file!");
 
-    startGame();
-
-    runGame();
+    startMainMenu();
 
     return 0;
 }

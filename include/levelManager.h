@@ -16,6 +16,7 @@ private:
 public:
     static LevelManager *getInstance();
 
+    const std::vector<std::string>& getLoadables() const { return loadables; }
     void updateIndex() const;
     Level loadLevel(const std::string &levelName) const;
     Level loadLevel(const size_t &levelIndex) const;

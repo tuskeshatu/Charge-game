@@ -50,6 +50,10 @@ void Player::setSpeed(sf::Vector2f &newSpeed)
 // Updates speed with acceleration and deltaTime
 void Player::updateMovement(const sf::Vector2f &acceleration)
 {
+    deltaTime = std::min(deltaTime, 0.0165f);
+    if (debug == 1)
+        std::cout << "dT:\t" << deltaTime << std::endl;
+
     sf::Vector2f newSpeed(speed.x + acceleration.x * deltaTime, speed.y += acceleration.y * deltaTime);
     setSpeed(newSpeed);
 
@@ -58,8 +62,8 @@ void Player::updateMovement(const sf::Vector2f &acceleration)
                   << speed.x << "\ty: " << speed.y << "\t\t";
 
     sf::Vector2f deltaPos(0.0, 0.0);
-    deltaPos.x = speed.x * std::min(deltaTime, 0.0165f);
-    deltaPos.y = speed.y * std::min(deltaTime, 0.0165f);
+    deltaPos.x = speed.x * deltaTime;
+    deltaPos.y = speed.y * deltaTime;
 
     // Update players position with deltaPos
     body.move(deltaPos);

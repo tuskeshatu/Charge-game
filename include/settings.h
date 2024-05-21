@@ -8,6 +8,7 @@
 // 3:   Print number of obstacles
 // 4:   Print starting speed vector dragged out with mouse
 // 5:   Debug LevelManager: level loading/saving
+// 6:   Display menu items
 
 const char debug = 1;
 
@@ -23,3 +24,6 @@ const float playerMaxSpeed = 500.0f;
 
 // Arrow width when drawing out with mouse
 const float arrowWidth = 5.0f;
+
+// Character sizes for texts
+const unsigned menuTitleSize = 72;
