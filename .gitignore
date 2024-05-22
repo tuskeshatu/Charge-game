@@ -6,6 +6,9 @@
 # Prerequisites
 *.d
 
+# Makefile
+Makefile
+
 # Compiled Object files
 *.slo
 *.lo
