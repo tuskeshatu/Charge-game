@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['physicsengine_0',['physicsengine',['../class_physics_engine.html',1,'PhysicsEngine'],['../class_physics_engine.html#a61098e6c37997d4f8daaaf7d24c5af54',1,'PhysicsEngine::PhysicsEngine()']]],
-  ['player_1',['player',['../class_player.html',1,'Player'],['../class_player.html#a39ea44252a7380db66db9f59f8b58b90',1,'Player::Player()']]]
+  ['in_20charge_20game_0',['in charge game',['../dev_guide.html#autotoc_md5',1,'OOP in Charge-game'],['../dev_guide.html#autotoc_md6',1,'OOP in Charge-game']]]
 ];

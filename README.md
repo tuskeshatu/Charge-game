@@ -3,7 +3,7 @@
 ## Description
 
 This is a repository for the Charge Game project. This project was created as a university finals project at **Budapest University of Technology and Economics**
-for the course **Basics of Programming 2 (BMEVIAUAA01)**.
+for the course **Basics of Programming 2 (BMEVIAUAA01)** by **Levente Kovacs**.
 
 This game lets the player place different charges around the 2D plane and interact with them through the player entity. The physical simulation uses the Euler method, which just means "we assume everything is linear if you look at it from close enough" in fancy terms. Basically the program just calculates the forces between the player and every object very fast and adds them together, thus getting a surprisingly accurate simulation.
 
@@ -73,9 +73,9 @@ More extensive [Doxygen documentation](doc/html/index.html) is provided in the d
 | Right Mouse Button + LCtrl | Create identical (repulsive) charges | ✓ |
 | Left Mouse Button + LAlt | Delete obstacles | ✓ |
 | Z | Zero the speed of the player | ✓ |
-| R | Reset the level to the starting state |
+| R | Reset the level to the starting state | |
 | R + LCtrl | Reset the level without clearing charges | ✓ |
-| Escape | Open the pause menu |
+| Escape | Open the pause menu | |
 | Save Level Button (in pause menu) | Save the level with a 20 character long name consisting of lowercase letters of the English alphabet | ✓ |
 
 ## Demo picture
