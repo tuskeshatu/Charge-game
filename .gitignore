@@ -3,9 +3,6 @@
 .vscode/tasks.json
 .vscode/launch.json
 
-# Makefile because of compiler path mismatch
-Makefile
-
 # Prerequisites
 *.d
 

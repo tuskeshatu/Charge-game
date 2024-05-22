@@ -26,7 +26,7 @@ The code is written with object-oriented design patterns in mind, but where I fo
 
 To build the project, first you need to install the great and holy [SFML library](https://www.sfml-dev.org/index.php). For this project I used [SFML 2.6.1](https://www.sfml-dev.org/download/sfml/2.6.1/). You can download SFML through their [official website](https://www.sfml-dev.org/download.php), though I **strongly advise** against it. Either you should install SFML through your beloved package manager (pacman with [mysys](https://packages.msys2.org/package/) if you're on windows and apt if youre on linux) **OR** compile it yourself from their [official source code](https://github.com/SFML/SFML) to prevent compiler version incompatibilities.
 
-Friendly reminder if using mysys and pacman: make sure to download the version for the correct toolchain you want to use (choose the repository at the top left corner on the mysys website).
+Friendly reminder if using msys and pacman: make sure to download the version for the correct toolchain you want to use (choose the repository at the top left corner on the msys website).
 
 ### nlohmann JSON Library
 
