@@ -14,7 +14,7 @@ Friendly reminder if using msys and pacman: make sure to download the version fo
 
 In this project, I used the nlohmann JSON library to handle JSON data. It provides a simple interface for parsing and generating JSON data.
 
-To use the nlohmann JSON library in your project, you need to include the nlohmann header files and link against the nlohmann library. You can find the library and header files on the [nlohmann GitHub repository](https://github.com/nlohmann/nlohmann-JSON).
+To use the nlohmann JSON library in your project, you need to include the nlohmann header files and link against the nlohmann library. You can find the library and header files on the [nlohmann GitHub repository](https://github.com/nlohmann/json).
 
 You can again either get it via a package manager, *(which I suggest to avoid the pain I had to go through,)* or compile it yourself.
 
