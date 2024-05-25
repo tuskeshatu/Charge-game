@@ -9,19 +9,26 @@ extern sf::RenderWindow window;
 
 // Constructor
 Obstacle::Obstacle(const float radius, const double charge, const sf::Vector2f &pos)
-    : Charge(charge), body(std::make_shared<sf::CircleShape>(radius))
+    : Charge(charge), collisionBox(radius), body(std::make_shared<sf::CircleShape>(radius * 4.0f))
 {
-    // Set origin and position
-    body->setOrigin(radius, radius);
-    body->setPosition(pos);
+    // Load textures
+    static sf::Texture repulseTexture;
+    static sf::Texture attractTexture;
 
-    // Set color based on charge (+ or -)
-    if (charge < 0)
-        body->setFillColor(sf::Color::Blue);
-    else if (charge > 0)
-        body->setFillColor(sf::Color::Green);
-    else
-        body->setFillColor(sf::Color::White);
+    // Load textures
+    if (!repulseTexture.loadFromFile("textures/repulse_obstacle_texture.png"))
+        throw std::runtime_error("Obstacle: Could not load repulse texture");
+    if (!attractTexture.loadFromFile("textures/attract_obstacle_texture.png"))
+        throw std::runtime_error("Obstacle: Could not load attract texture");
+
+    // Set texture
+    body->setFillColor(sf::Color::White);
+
+    body->setTexture(charge > 0 ? &repulseTexture : &attractTexture);
+
+    // Set origin and position
+    body->setOrigin(radius * 4.0f, radius * 4.0f);
+    body->setPosition(pos);
 }
 
 // Set position, guard against placing outside of window

@@ -14,13 +14,11 @@ class Obstacle : public Charge
 {
 private:
 
-    /**
-     * @brief Represents a circle shape in SFML.
-     *
-     * The sf::CircleShape class is a drawable object that represents a circle.
-     * It can be used to draw circles of various sizes and colors on an SFML window.
-     */
-    std::shared_ptr<sf::CircleShape> body;
+    const float collisionBox; /**< The collision box of the obstacle */
+    std::shared_ptr<sf::CircleShape> body; /**< The body of the obstacle */
+
+    static sf::Texture repulseTexture; /**< Texture for the repulse obstacle */
+    static sf::Texture attractTexture; /**< Texture for the attract obstacle */
 
 public:
 
@@ -39,6 +37,13 @@ public:
      * @return const sf::CircleShape& A constant reference to the body of the obstacle.
      */
     const std::shared_ptr<sf::CircleShape> &getBody() const override { return body; }
+
+    /**
+     * @brief Returns a constant reference to the collision box of the obstacle.
+     * 
+     * @return const sf::CircleShape& A constant reference to the collision box of the obstacle.
+     */
+    const float getCollisionRadius() const { return collisionBox; }
 
     /**
      * @brief Sets the position of the obstacle.

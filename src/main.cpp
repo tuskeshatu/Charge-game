@@ -276,7 +276,7 @@ void handleEditorModeInput()
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
         {
             // Create obstacle and add to level, push to drawables.
-            std::shared_ptr<Obstacle> newObstacle (std::make_shared<Obstacle>(7.0f, -1500.0f, mousePos));
+            std::shared_ptr<Obstacle> newObstacle(std::make_shared<Obstacle>(7.0f, -1500.0f, mousePos));
             level.addObstacle(newObstacle);
 
             gameDrawables.push_back(newObstacle->getBody());
@@ -305,7 +305,7 @@ void handleEditorModeInput()
         mousePos.y = sf::Mouse::getPosition(window).y;
 
         // Create obstacle and add to level, push to drawables.
-        std::shared_ptr<Obstacle> newObstacle (std::make_shared<Obstacle>(7.0f, 1500.0f, mousePos));
+        std::shared_ptr<Obstacle> newObstacle(std::make_shared<Obstacle>(7.0, 1500.0f, mousePos));
         level.addObstacle(newObstacle);
         gameDrawables.push_back(newObstacle->getBody());
     }
@@ -341,6 +341,7 @@ void render()
         editorText.setPosition(10, 10);
         window.draw(editorText);
     }
+
     window.display();
 }
 
@@ -355,7 +356,7 @@ void setStartSpeed()
 {
     // Construct isMouseOnPlayer with the vector from if the vector from the mouse to the player is shorter than the radius of the player
     // To avoid calculating vectors, check if the x and y coordinates of the mouse is inside the circle
-    bool isMouseOnPlayer = std::abs(sf::Mouse::getPosition(window).x - player.getBody()->getPosition().x) < player.getBody()->getRadius() && std::abs(sf::Mouse::getPosition(window).y - player.getBody()->getPosition().y) < player.getBody()->getRadius();
+    bool isMouseOnPlayer = std::abs(sf::Mouse::getPosition(window).x - player.getBody()->getPosition().x) < player.getCollisionRadius() && std::abs(sf::Mouse::getPosition(window).y - player.getBody()->getPosition().y) < player.getCollisionRadius();
 
     // Wait for mouse click, when mouse is over player
     while (!(sf::Mouse::isButtonPressed((sf::Mouse::Left)) && isMouseOnPlayer) && window.isOpen())
@@ -373,7 +374,7 @@ void setStartSpeed()
         if (isPause)
             displayPauseOverlay();
         else
-            isMouseOnPlayer = std::abs(sf::Mouse::getPosition(window).x - player.getBody()->getPosition().x) < player.getBody()->getRadius() && std::abs(sf::Mouse::getPosition(window).y - player.getBody()->getPosition().y) < player.getBody()->getRadius();
+            isMouseOnPlayer = std::abs(sf::Mouse::getPosition(window).x - player.getBody()->getPosition().x) < player.getCollisionRadius() && std::abs(sf::Mouse::getPosition(window).y - player.getBody()->getPosition().y) < player.getCollisionRadius();
     }
 
     // If clicked on player initialize starting speed and create arrow rectangle
@@ -466,7 +467,7 @@ void runGame()
 // Resets drawables, window and player
 /**
  * @brief Starts the game.
- * 
+ *
  * This function is responsible for initializing the game window, setting up the player's position,
  * clearing the drawables, and starting the game loop.
  */
@@ -503,7 +504,7 @@ void startGame()
 
 /**
  * @brief Runs the main menu of the game.
- * 
+ *
  * This function sets up and displays the main menu of the game. It creates and positions various menu items, handles user input, and updates the menu based on the user's actions.
  */
 void runMainMenu()
@@ -629,9 +630,13 @@ void runMainMenu()
                             // Setting the name to default
                             LevelManager::getInstance()->deleteLevel(menuItems[i]->getString());
                             menuItems[i]->setString("Empty Slot");
+
+                            // Reposition the menu item
+                            menuItems[i]->setOrigin(menuItems[i]->getGlobalBounds().width / 2.0f, menuItems[i]->getGlobalBounds().height / 2.0f);
+                            menuItems[i]->setPosition((window.getSize().x - 3 * 200) / 2.0f + 100 + (i % 3 * 200), window.getSize().y / 2.0f + (i / 3) * 50);
                         }
                     }
-                        // If not in delete mode load the clicked level
+                    // If not in delete mode load the clicked level
                     else
                     {
                         // If clicked level is default level load empty level
@@ -689,7 +694,7 @@ void runMainMenu()
 
 /**
  * @brief Starts the main menu of the game.
- * 
+ *
  * This function closes the current window, creates a new window for the main menu,
  * and sets the window position to the previous position if it was not (0,0).
  * It also clears the gameDrawables and menuDrawables vectors, sets the editor mode to false,
@@ -713,12 +718,12 @@ void startMainMenu()
 
 /**
  * @brief Displays the pause overlay on the screen.
- * 
- * This function clears the menuDrawables vector and adds various drawable objects to it, such as an overlay, text for "Paused", 
- * text for "Back to main menu", and text for "Save level". It then enters a loop where it continuously renders the screen, 
- * handles menu events, and checks for mouse clicks on the "Back to main menu" and "Save level" texts. If the "Back to main menu" 
- * text is clicked, the menuDrawables vector is cleared and the startMainMenu function is called. If the "Save level" text is 
- * clicked and the isEditorMode flag is true, the menuDrawables vector is cleared and the saveMenu function is called. The loop 
+ *
+ * This function clears the menuDrawables vector and adds various drawable objects to it, such as an overlay, text for "Paused",
+ * text for "Back to main menu", and text for "Save level". It then enters a loop where it continuously renders the screen,
+ * handles menu events, and checks for mouse clicks on the "Back to main menu" and "Save level" texts. If the "Back to main menu"
+ * text is clicked, the menuDrawables vector is cleared and the startMainMenu function is called. If the "Save level" text is
+ * clicked and the isEditorMode flag is true, the menuDrawables vector is cleared and the saveMenu function is called. The loop
  * continues until the window is closed or the isPause flag is false.
  */
 void displayPauseOverlay()
@@ -763,7 +768,7 @@ void displayPauseOverlay()
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
         {
             sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-            
+
             // If back to main menu item has been clicked wipe everything and return to the main menu
             if (backToMenuText->getGlobalBounds().contains(mousePos.x, mousePos.y))
             {
@@ -784,7 +789,7 @@ void displayPauseOverlay()
 
 /**
  * @brief Displays a save menu where the user can enter a level name and save the level.
- * 
+ *
  * This function creates a save menu overlay with a text input field and a "Back" button.
  * The user can enter a level name using the keyboard and press Enter to save the level.
  * The function continuously renders the menu and handles user input until the level is saved or the window is closed.
@@ -796,8 +801,12 @@ void saveMenu()
     overlay->setFillColor(sf::Color(0, 0, 0, 220));
     menuDrawables.push_back(overlay);
 
-    // Create input text fiels
-    std::shared_ptr<sf::Text> inputText(std::make_shared<sf::Text>("Enter level name:", font, 20));
+    // Create input text field
+
+    // String for setting the input text field
+    std::string levelName(level.getName());
+
+    std::shared_ptr<sf::Text> inputText(std::make_shared<sf::Text>("Enter level name: " + levelName, font, 20));
     inputText->setFillColor(sf::Color::White);
     inputText->setOrigin(inputText->getLocalBounds().width / 2.0f, inputText->getLocalBounds().height / 2.0f);
     inputText->setPosition(window.getSize().x / 2.0f, window.getSize().y / 2.0f);
@@ -810,9 +819,7 @@ void saveMenu()
     backText->setPosition(window.getSize().x / 2.0f, window.getSize().y / 2.0f + 100.0f);
     menuDrawables.push_back(backText);
 
-    // String for setting the input text field
-    std::string levelName(level.getName());
-    // Boolean for checking if input is still to be expected 
+    // Boolean for checking if input is still to be expected
     bool isEnteringName = true;
 
     // Input loop
@@ -884,7 +891,7 @@ void saveMenu()
                 break;
             }
         }
-        
+
         // Set displayed string to input string
         inputText->setString("Enter level name: " + levelName);
     }

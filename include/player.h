@@ -16,7 +16,11 @@ class Player : public Charge
 private:
     sf::Vector2f speed; /**< The speed of the player. */
     const double mass; /**< The mass of the player. */
+
+    const float collisionRadius; /**< The collision box of the player. */
     std::shared_ptr<sf::CircleShape> body; /**< The body shape of the player. */
+
+    static sf::Texture playerTexture; /**< Texture for the player */
 
 public:
     /**
@@ -42,6 +46,13 @@ public:
      * @return The speed of the player. Returns as value to enable calculations for other functions.
      */
     sf::Vector2f getSpeed() const { return speed; }
+
+    /**
+     * @brief Gets the collision box of the player.
+     * 
+     * @return The collision box of the player.
+     */
+    const float getCollisionRadius() const { return collisionRadius; }
 
     /**
      * @brief Gets the body shape of the player.

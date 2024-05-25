@@ -75,7 +75,7 @@ void PhysicsEngine::checkCollision()
         sf::Vector2f obstaclePos(obstacle.get()->getBody()->getPosition());
         // If the length of the vector between the obstacle and the player is shorter than the radius they are colliding
         // To avoid calculating sqrt basically: x^2+y^2 <= (r1 + r2)^2
-        if ((playerPos.x - obstaclePos.x) * (playerPos.x - obstaclePos.x) + (playerPos.y - obstaclePos.y) * (playerPos.y - obstaclePos.y) <= (player.getBody()->getRadius() + obstacle.get()->getBody()->getRadius()) * (player.getBody()->getRadius() + obstacle.get()->getBody()->getRadius()))
+        if ((playerPos.x - obstaclePos.x) * (playerPos.x - obstaclePos.x) + (playerPos.y - obstaclePos.y) * (playerPos.y - obstaclePos.y) <= (player.getCollisionRadius() + obstacle.get()->getCollisionRadius()) * (player.getCollisionRadius() + obstacle.get()->getCollisionRadius()))
             isPause = true;
     }
 

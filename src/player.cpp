@@ -10,15 +10,23 @@ extern float deltaTime;
 
 extern sf::RenderWindow window;
 
+sf::Texture Player::playerTexture;
+
 // Create body of player and set physical traits
 Player::Player(float radius, double charge, double mass, sf::Vector2f pos)
-    : Charge(charge), speed(0.0f, 0.0f), mass(mass), body(std::make_shared<sf::CircleShape>(radius))
+    : Charge(charge), speed(0.0f, 0.0f), mass(mass), collisionRadius(radius), body(std::make_shared<sf::CircleShape>(radius * 4.0f))
 {
-    // Set position with setter to get protection for out of bounds type of stuff
-    body->setOrigin(radius, radius);
-    setPosition(pos);
+    // Load texture
+    if (!playerTexture.loadFromFile("textures/player_texture.bmp"))
+        throw std::runtime_error("Player: Could not load player texture");
+    
     // Color of player is red for now
-    body->setFillColor(sf::Color::Red);
+    body->setFillColor(sf::Color::White);
+    body->setTexture(&playerTexture);
+
+    // Set position with setter to get protection for out of bounds type of stuff
+    body->setOrigin(radius * 4.0f, radius * 4.0f);
+    setPosition(pos);
 }
 
 // Set position, guard against placing outside of window
