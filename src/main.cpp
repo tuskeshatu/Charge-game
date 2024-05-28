@@ -33,6 +33,14 @@ extern const unsigned levelNameCharLimit;
 sf::RenderWindow window;
 
 /**
+ * @brief The icon of the application window.
+ *
+ * The sf::Image class is used to load and manipulate images.
+ * It is used to set the icon of the application window.
+ */
+sf::Image icon;
+
+/**
  * @class Player
  * @brief Represents a player in the game.
  *
@@ -501,6 +509,9 @@ void startGame()
     if (prevPosition.x != 0 && prevPosition.y != 0)
         window.setPosition(prevPosition);
 
+    // Set icon
+    window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+
     // Clear the window, set player's start position, clear drawables
     window.clear(sf::Color::Black);
     sf::Vector2f playerStartPos = level.getPlayerStartPos();
@@ -725,6 +736,9 @@ void startMainMenu()
     if (prevPosition.x != 0 && prevPosition.y != 0)
         window.setPosition(prevPosition);
 
+    // Set icon
+    window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+
     gameDrawables.clear();
     menuDrawables.clear();
 
@@ -931,6 +945,9 @@ int main()
     // Loads font
     if (!font.loadFromFile("resources/fonts/joystix monospace.otf"))
         throw std::runtime_error("Couldn't locate font file!");
+
+    if (!icon.loadFromFile("resources/textures/icon.png"))
+        throw std::runtime_error("Couldn't locate icon file!");
 
     // And starts main menu
     startMainMenu();
