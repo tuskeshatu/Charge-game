@@ -9,10 +9,6 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -25,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Charge game<span id="projectnumber">&#160;4.2</span>
+   <div id="projectname">Charge game<span id="projectnumber">&#160;4.3</span>
    </div>
    <div id="projectbrief">Levente Kovacs</div>
   </td>
@@ -52,22 +48,6 @@ $(function() {
 </script>
 <div id="main-nav"></div>
 </div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('functions.html',''); initResizable(); });
-/* @license-end */
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -94,6 +74,9 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 
 <h3><a id="index_a" name="index_a"></a>- a -</h3><ul>
 <li>addObstacle()&#160;:&#160;<a class="el" href="class_level.html#ace13e1961defe9f9525ed463f99fc7fd">Level</a></li>
+<li>Animation()&#160;:&#160;<a class="el" href="class_animation.html#aa2a1c26b741c469831c9be6cecac8986">Animation</a></li>
+<li>applyTransform()&#160;:&#160;<a class="el" href="class_animation.html#a21b899da5db84a510cc901616681e134">Animation</a>, <a class="el" href="class_obstacle_animation.html#a94fa234509da84a28eb1870f2b8a4baa">ObstacleAnimation</a>, <a class="el" href="class_player_animation.html#a2622fb098d78b8a244429612d93e5f68">PlayerAnimation</a></li>
+<li>attractTexture&#160;:&#160;<a class="el" href="class_animation.html#a046855a485901efd504236deeac3b72c">Animation</a></li>
 </ul>
 
 
@@ -110,6 +93,8 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 
 <h3><a id="index_g" name="index_g"></a>- g -</h3><ul>
 <li>getBody()&#160;:&#160;<a class="el" href="class_charge.html#a8ca46b120526bd2d686f99872b43b6e5">Charge</a>, <a class="el" href="class_obstacle.html#a736e904e64e87bd4bafcfc6aaed58284">Obstacle</a>, <a class="el" href="class_player.html#aa2c0eeee8f9b0de87770031e1052b25d">Player</a></li>
+<li>getCollisionRadius()&#160;:&#160;<a class="el" href="class_obstacle.html#a4fb8ad179f3c576d58e8cdca0e6cab7b">Obstacle</a>, <a class="el" href="class_player.html#a5155abdb47812fef97762992b3249515">Player</a></li>
+<li>getDistanceSquaredToPlayer()&#160;:&#160;<a class="el" href="class_obstacle.html#ad59a467e82acd9b105d67da1848dc0a0">Obstacle</a></li>
 <li>getElectricCharge()&#160;:&#160;<a class="el" href="class_charge.html#a7b50ddee2c400e3026890cdad6050e3a">Charge</a></li>
 <li>getInstance()&#160;:&#160;<a class="el" href="class_level_manager.html#a2bfae35953fddf11abad4ac5f00391d2">LevelManager</a></li>
 <li>getLoadables()&#160;:&#160;<a class="el" href="class_level_manager.html#a24eb3b16fbbfd0befffa91993e013f74">LevelManager</a></li>
@@ -119,6 +104,13 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 <li>getPlayerStartPos()&#160;:&#160;<a class="el" href="class_level.html#ab34a21d577f3eac643aa6f40985d2365">Level</a></li>
 <li>getSize()&#160;:&#160;<a class="el" href="class_level.html#a8e6e41e4ed7e21169e5361ab071fd55a">Level</a></li>
 <li>getSpeed()&#160;:&#160;<a class="el" href="class_player.html#a05e4cf43af05074675390921598f0f4f">Player</a></li>
+<li>getTexture()&#160;:&#160;<a class="el" href="class_animation.html#aceb713113fea1038752e2d0018d0e304">Animation</a></li>
+<li>getVectorToPlayer()&#160;:&#160;<a class="el" href="class_obstacle.html#af921cc1e8e87333ccdf440562723cef9">Obstacle</a></li>
+</ul>
+
+
+<h3><a id="index_i" name="index_i"></a>- i -</h3><ul>
+<li>isLoaded&#160;:&#160;<a class="el" href="class_animation.html#a7385ce235d47060f7c4bdf21a9fcee8e">Animation</a></li>
 </ul>
 
 
@@ -129,18 +121,22 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 
 
 <h3><a id="index_o" name="index_o"></a>- o -</h3><ul>
-<li>Obstacle()&#160;:&#160;<a class="el" href="class_obstacle.html#a846d5f5b57dcd524632f3f4d69fc9a7e">Obstacle</a></li>
+<li>Obstacle()&#160;:&#160;<a class="el" href="class_obstacle.html#acafed5eecdc225e182ea8f0b62d2543e">Obstacle</a></li>
+<li>ObstacleAnimation()&#160;:&#160;<a class="el" href="class_obstacle_animation.html#a950fd911cb9bd26480b0b5956cb98daa">ObstacleAnimation</a></li>
 </ul>
 
 
 <h3><a id="index_p" name="index_p"></a>- p -</h3><ul>
-<li>PhysicsEngine()&#160;:&#160;<a class="el" href="class_physics_engine.html#a61098e6c37997d4f8daaaf7d24c5af54">PhysicsEngine</a></li>
+<li>PhysicsEngine()&#160;:&#160;<a class="el" href="class_physics_engine.html#a5662a5730d60f2f9159eb471e48e742d">PhysicsEngine</a></li>
 <li>Player()&#160;:&#160;<a class="el" href="class_player.html#a39ea44252a7380db66db9f59f8b58b90">Player</a></li>
+<li>PlayerAnimation()&#160;:&#160;<a class="el" href="class_player_animation.html#aca903b5cb19aa5717f54debbc1da5b9d">PlayerAnimation</a></li>
+<li>playerTexture&#160;:&#160;<a class="el" href="class_animation.html#acd34ddb11a84f37be966dc370251e352">Animation</a></li>
 </ul>
 
 
 <h3><a id="index_r" name="index_r"></a>- r -</h3><ul>
 <li>removeObstacle()&#160;:&#160;<a class="el" href="class_level.html#a462f8bc789a2e1c19a9400c53c0536f1">Level</a></li>
+<li>repulseTexture&#160;:&#160;<a class="el" href="class_animation.html#a917866b6f03f128bca5bfe9bfd5199c9">Animation</a></li>
 </ul>
 
 
@@ -154,18 +150,21 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 </ul>
 
 
+<h3><a id="index_t" name="index_t"></a>- t -</h3><ul>
+<li>texture&#160;:&#160;<a class="el" href="class_animation.html#a74f0ebd50ecb7fc1d929f32d34e29b85">Animation</a></li>
+<li>type&#160;:&#160;<a class="el" href="class_animation.html#a9dfaccd92064919cb5f45b3d4b130ff1">Animation</a></li>
+</ul>
+
+
 <h3><a id="index_u" name="index_u"></a>- u -</h3><ul>
 <li>updateIndex()&#160;:&#160;<a class="el" href="class_level_manager.html#a15bdca6f03fab188587a37909eab67a8">LevelManager</a></li>
 <li>updateMovement()&#160;:&#160;<a class="el" href="class_player.html#ad851e8ddcfd4f35835aa80307e9934b5">Player</a></li>
 <li>updatePlayer()&#160;:&#160;<a class="el" href="class_physics_engine.html#afc167b9e7334f263685e611696521832">PhysicsEngine</a></li>
 </ul>
 </div><!-- contents -->
-</div><!-- doc-content -->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
 </body>
 </html>

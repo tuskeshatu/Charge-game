@@ -3,6 +3,7 @@
 #include <memory>
 
 #include "charge.h"
+#include "playerAnimation.h"
 
 /**
  * @class Player
@@ -20,7 +21,7 @@ private:
     const float collisionRadius; /**< The collision box of the player. */
     std::shared_ptr<sf::CircleShape> body; /**< The body shape of the player. */
 
-    static sf::Texture playerTexture; /**< Texture for the player */
+    PlayerAnimation animation; /**< The animation of the player. */
 
 public:
     /**

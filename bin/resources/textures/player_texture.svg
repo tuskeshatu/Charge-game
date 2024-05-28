@@ -2,16 +2,16 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="30"
-   height="30"
-   viewBox="0 0 7.9374998 7.9375002"
+   width="120"
+   height="120"
+   viewBox="0 0 31.749999 31.750001"
    version="1.1"
    id="svg827"
-   inkscape:export-filename="C:\Users\Levi\Desktop\Charge-game\bin\textures\repulse_obstacle_texture.bmp"
+   inkscape:export-filename="C:\Users\Levi\Desktop\Charge-game\bin\resources\textures\player_texture.png"
    inkscape:export-xdpi="250"
    inkscape:export-ydpi="250"
    inkscape:version="1.1.2 (b8e25be833, 2022-02-05)"
-   sodipodi:docname="repulse_obstacle_texture.svg"
+   sodipodi:docname="player_texture.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -28,15 +28,15 @@
      inkscape:document-units="px"
      showgrid="false"
      units="px"
-     inkscape:zoom="5.6568545"
-     inkscape:cx="5.5684657"
-     inkscape:cy="13.258252"
+     inkscape:zoom="4.0000002"
+     inkscape:cx="83.124996"
+     inkscape:cy="55.999997"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer2" />
+     inkscape:current-layer="layer1" />
   <defs
      id="defs824">
     <linearGradient
@@ -63,14 +63,21 @@
          offset="0"
          id="stop9603" />
       <stop
-         style="stop-color:#991e29;stop-opacity:1"
-         offset="0"
-         id="stop3423" />
-      <stop
-         style="stop-color:#ac1e67;stop-opacity:0.05098039"
+         style="stop-color:#695fff;stop-opacity:0;"
          offset="1"
          id="stop9605" />
     </linearGradient>
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient9607-1-9-2"
+       id="radialGradient9609"
+       cx="13.229167"
+       cy="13.229167"
+       fx="13.229167"
+       fy="13.229167"
+       r="1.3229167"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(12.000003,0,0,12.000002,-142.87504,-142.87503)" />
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient12939"
@@ -85,54 +92,41 @@
        inkscape:collect="always"
        style="color-interpolation-filters:sRGB"
        id="filter13203"
-       x="-0.015053319"
-       y="-0.015053496"
-       width="1.0301066"
-       height="1.030107">
+       x="-0.062681746"
+       y="-0.06268173"
+       width="1.1253635"
+       height="1.1253635">
       <feGaussianBlur
          inkscape:collect="always"
-         stdDeviation="0.011616595"
+         stdDeviation="0.011637204"
          id="feGaussianBlur13205" />
     </filter>
-    <radialGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient9607-1-9-2"
-       id="radialGradient6337"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(3.0179451,0,0,2.9552032,-35.956149,-35.126125)"
-       cx="13.229167"
-       cy="13.229167"
-       fx="13.229167"
-       fy="13.229167"
-       r="1.3229167" />
   </defs>
   <g
      inkscape:groupmode="layer"
      id="layer2"
-     inkscape:label="Attract body"
-     style="display:inline">
+     inkscape:label="Player body">
     <ellipse
-       style="mix-blend-mode:normal;fill:url(#radialGradient6337);fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+       style="mix-blend-mode:normal;fill:url(#radialGradient9609);fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
        id="path1058-2"
-       cx="3.96875"
-       cy="3.9687505"
+       cx="15.875"
+       cy="15.875001"
        inkscape:label="path1058"
-       rx="3.968749"
-       ry="3.9687493" />
+       rx="15.874998"
+       ry="15.874999" />
   </g>
   <g
-     inkscape:label="Attract template"
+     inkscape:label="Player template"
      inkscape:groupmode="layer"
-     id="layer1"
-     style="display:inline">
+     id="layer1">
     <ellipse
-       style="opacity:1;fill:#9f1e29;fill-opacity:1;fill-rule:nonzero;stroke:url(#linearGradient13199);stroke-width:0;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter13203)"
+       style="opacity:1;fill:#931fff;fill-opacity:1;fill-rule:nonzero;stroke:url(#linearGradient13199);stroke-width:0.176325;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter13203)"
        id="path1058"
-       inkscape:label="path1058"
-       transform="matrix(1.8882636,0,0,1.8631809,0.221727,0.27150045)"
-       ry="0.92604166"
-       rx="0.92605251"
+       cx="1.984375"
        cy="1.984375"
-       cx="1.984375" />
+       inkscape:label="path1058"
+       rx="0.92604142"
+       ry="0.92604166"
+       transform="matrix(7.0444284,0,0,6.9457183,1.3669778,1.5628685)" />
   </g>
 </svg>

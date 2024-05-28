@@ -9,10 +9,6 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -25,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Charge game<span id="projectnumber">&#160;4.2</span>
+   <div id="projectname">Charge game<span id="projectnumber">&#160;4.3</span>
    </div>
    <div id="projectbrief">Levente Kovacs</div>
   </td>
@@ -51,23 +47,6 @@ $(function() {
 /* @license-end */
 </script>
 <div id="main-nav"></div>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('class_physics_engine.html',''); initResizable(); });
-/* @license-end */
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -89,6 +68,7 @@ $(document).ready(function(){initNavTree('class_physics_engine.html',''); initRe
 </div>
 </div>
 
+</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a>  </div>
@@ -103,9 +83,9 @@ $(document).ready(function(){initNavTree('class_physics_engine.html',''); initRe
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a61098e6c37997d4f8daaaf7d24c5af54" id="r_a61098e6c37997d4f8daaaf7d24c5af54"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physics_engine.html#a61098e6c37997d4f8daaaf7d24c5af54">PhysicsEngine</a> (const float coulombConst=8.988e-4f, const float frictionCoeff=10.0f, const float g=9.81f)</td></tr>
-<tr class="memdesc:a61098e6c37997d4f8daaaf7d24c5af54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a new <a class="el" href="class_physics_engine.html" title="Represents a physics engine for simulating physical forces and collisions.">PhysicsEngine</a> object.  <br /></td></tr>
-<tr class="separator:a61098e6c37997d4f8daaaf7d24c5af54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5662a5730d60f2f9159eb471e48e742d" id="r_a5662a5730d60f2f9159eb471e48e742d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physics_engine.html#a5662a5730d60f2f9159eb471e48e742d">PhysicsEngine</a> (const float coulombConst=8.988e2f, const float frictionCoeff=10.0f, const float g=9.81f)</td></tr>
+<tr class="memdesc:a5662a5730d60f2f9159eb471e48e742d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a new <a class="el" href="class_physics_engine.html" title="Represents a physics engine for simulating physical forces and collisions.">PhysicsEngine</a> object.  <br /></td></tr>
+<tr class="separator:a5662a5730d60f2f9159eb471e48e742d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc167b9e7334f263685e611696521832" id="r_afc167b9e7334f263685e611696521832"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physics_engine.html#afc167b9e7334f263685e611696521832">updatePlayer</a> ()</td></tr>
 <tr class="memdesc:afc167b9e7334f263685e611696521832"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the player's movement.  <br /></td></tr>
 <tr class="separator:afc167b9e7334f263685e611696521832"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -118,8 +98,8 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="physics_8h_source.html#l00014">14</a> of file <a class="el" href="physics_8h_source.html">physics.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a61098e6c37997d4f8daaaf7d24c5af54" name="a61098e6c37997d4f8daaaf7d24c5af54"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a61098e6c37997d4f8daaaf7d24c5af54">&#9670;&#160;</a></span>PhysicsEngine()</h2>
+<a id="a5662a5730d60f2f9159eb471e48e742d" name="a5662a5730d60f2f9159eb471e48e742d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5662a5730d60f2f9159eb471e48e742d">&#9670;&#160;</a></span>PhysicsEngine()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -128,7 +108,7 @@ Public Member Functions</h2></td></tr>
           <td class="memname">PhysicsEngine::PhysicsEngine </td>
           <td>(</td>
           <td class="paramtype">const float&#160;</td>
-          <td class="paramname"><em>coulombConst</em> = <code>8.988e-4f</code>, </td>
+          <td class="paramname"><em>coulombConst</em> = <code>8.988e2f</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -185,36 +165,36 @@ Public Member Functions</h2></td></tr>
 
 <p>Updates the player's movement. </p>
 
-<p class="definition">Definition at line <a class="el" href="physics_8cpp_source.html#l00096">96</a> of file <a class="el" href="physics_8cpp_source.html">physics.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   97</span>{</div>
-<div class="line"><span class="lineno">   98</span>    <span class="comment">// Initialize total force</span></div>
-<div class="line"><span class="lineno">   99</span>    sf::Vector2f totalForce(0.0, 0.0);</div>
+<p class="definition">Definition at line <a class="el" href="physics_8cpp_source.html#l00086">86</a> of file <a class="el" href="physics_8cpp_source.html">physics.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   87</span>{</div>
+<div class="line"><span class="lineno">   88</span>    <span class="comment">// Initialize total force</span></div>
+<div class="line"><span class="lineno">   89</span>    sf::Vector2f totalForce(0.0, 0.0);</div>
+<div class="line"><span class="lineno">   90</span> </div>
+<div class="line"><span class="lineno">   91</span>    <span class="comment">// Add the electric part</span></div>
+<div class="line"><span class="lineno">   92</span>    totalForce += calculateElectricForce();</div>
+<div class="line"><span class="lineno">   93</span> </div>
+<div class="line"><span class="lineno">   94</span>    <span class="comment">// Subtract a friction force proportionally linked to the speed</span></div>
+<div class="line"><span class="lineno">   95</span>     totalForce -= calculateFrictionForce();</div>
+<div class="line"><span class="lineno">   96</span> </div>
+<div class="line"><span class="lineno">   97</span>    <span class="keywordflow">if</span> (debug == 2)</div>
+<div class="line"><span class="lineno">   98</span>        std::cout &lt;&lt; <span class="stringliteral">&quot;total force:\t&quot;</span> &lt;&lt; std::sqrt(totalForce.x * totalForce.x + totalForce.y * totalForce.y)</div>
+<div class="line"><span class="lineno">   99</span>                  &lt;&lt; <span class="stringliteral">&quot;\t\tx: &quot;</span> &lt;&lt; totalForce.x &lt;&lt; <span class="stringliteral">&quot;\ty: &quot;</span> &lt;&lt; totalForce.y &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">  100</span> </div>
-<div class="line"><span class="lineno">  101</span>    <span class="comment">// Add the electric part</span></div>
-<div class="line"><span class="lineno">  102</span>    totalForce += calculateElectricForce();</div>
-<div class="line"><span class="lineno">  103</span> </div>
-<div class="line"><span class="lineno">  104</span>    <span class="comment">// Subtract a friction force proportionally linked to the speed</span></div>
-<div class="line"><span class="lineno">  105</span>    totalForce -= calculateFrictionForce();</div>
-<div class="line"><span class="lineno">  106</span> </div>
-<div class="line"><span class="lineno">  107</span>    <span class="keywordflow">if</span> (debug == 2)</div>
-<div class="line"><span class="lineno">  108</span>        std::cout &lt;&lt; <span class="stringliteral">&quot;total force:\t&quot;</span> &lt;&lt; std::sqrt(totalForce.x * totalForce.x + totalForce.y * totalForce.y)</div>
-<div class="line"><span class="lineno">  109</span>                  &lt;&lt; <span class="stringliteral">&quot;\t\tx: &quot;</span> &lt;&lt; totalForce.x &lt;&lt; <span class="stringliteral">&quot;\ty: &quot;</span> &lt;&lt; totalForce.y &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  110</span> </div>
-<div class="line"><span class="lineno">  111</span>    <span class="comment">// To get acceleration divide force by mass</span></div>
-<div class="line"><span class="lineno">  112</span>    sf::Vector2f acceleration(0.0, 0.0);</div>
-<div class="line"><span class="lineno">  113</span>    acceleration.x = totalForce.x / player.<a class="code hl_function" href="class_player.html#a0bfc6fd693c7044f69da826a3f4fe46b">getMass</a>();</div>
-<div class="line"><span class="lineno">  114</span>    acceleration.y = totalForce.y / player.<a class="code hl_function" href="class_player.html#a0bfc6fd693c7044f69da826a3f4fe46b">getMass</a>();</div>
-<div class="line"><span class="lineno">  115</span> </div>
-<div class="line"><span class="lineno">  116</span>    <span class="comment">// Update player movement</span></div>
-<div class="line"><span class="lineno">  117</span>    player.<a class="code hl_function" href="class_player.html#ad851e8ddcfd4f35835aa80307e9934b5">updateMovement</a>(acceleration);</div>
-<div class="line"><span class="lineno">  118</span>    </div>
-<div class="line"><span class="lineno">  119</span>    <span class="comment">// And check for collisions</span></div>
-<div class="line"><span class="lineno">  120</span>    checkCollision();</div>
-<div class="line"><span class="lineno">  121</span>}</div>
-<div class="ttc" id="aclass_player_html_a0bfc6fd693c7044f69da826a3f4fe46b"><div class="ttname"><a href="class_player.html#a0bfc6fd693c7044f69da826a3f4fe46b">Player::getMass</a></div><div class="ttdeci">const double getMass() const</div><div class="ttdoc">Gets the mass of the player.</div><div class="ttdef"><b>Definition</b> <a href="player_8h_source.html#l00037">player.h:37</a></div></div>
-<div class="ttc" id="aclass_player_html_ad851e8ddcfd4f35835aa80307e9934b5"><div class="ttname"><a href="class_player.html#ad851e8ddcfd4f35835aa80307e9934b5">Player::updateMovement</a></div><div class="ttdeci">void updateMovement(const sf::Vector2f &amp;acceleration)</div><div class="ttdoc">Updates the movement of the player based on the given acceleration.</div><div class="ttdef"><b>Definition</b> <a href="player_8cpp_source.html#l00054">player.cpp:54</a></div></div>
+<div class="line"><span class="lineno">  101</span>    <span class="comment">// To get acceleration divide force by mass</span></div>
+<div class="line"><span class="lineno">  102</span>    sf::Vector2f acceleration(0.0, 0.0);</div>
+<div class="line"><span class="lineno">  103</span>    acceleration.x = totalForce.x / player.<a class="code hl_function" href="class_player.html#a0bfc6fd693c7044f69da826a3f4fe46b">getMass</a>();</div>
+<div class="line"><span class="lineno">  104</span>    acceleration.y = totalForce.y / player.<a class="code hl_function" href="class_player.html#a0bfc6fd693c7044f69da826a3f4fe46b">getMass</a>();</div>
+<div class="line"><span class="lineno">  105</span> </div>
+<div class="line"><span class="lineno">  106</span>    <span class="comment">// Update player movement</span></div>
+<div class="line"><span class="lineno">  107</span>    player.<a class="code hl_function" href="class_player.html#ad851e8ddcfd4f35835aa80307e9934b5">updateMovement</a>(acceleration);</div>
+<div class="line"><span class="lineno">  108</span>    </div>
+<div class="line"><span class="lineno">  109</span>    <span class="comment">// And check for collisions</span></div>
+<div class="line"><span class="lineno">  110</span>    checkCollision();</div>
+<div class="line"><span class="lineno">  111</span>}</div>
+<div class="ttc" id="aclass_player_html_a0bfc6fd693c7044f69da826a3f4fe46b"><div class="ttname"><a href="class_player.html#a0bfc6fd693c7044f69da826a3f4fe46b">Player::getMass</a></div><div class="ttdeci">const double getMass() const</div><div class="ttdoc">Gets the mass of the player.</div><div class="ttdef"><b>Definition</b> <a href="player_8h_source.html#l00042">player.h:42</a></div></div>
+<div class="ttc" id="aclass_player_html_ad851e8ddcfd4f35835aa80307e9934b5"><div class="ttname"><a href="class_player.html#ad851e8ddcfd4f35835aa80307e9934b5">Player::updateMovement</a></div><div class="ttdeci">void updateMovement(const sf::Vector2f &amp;acceleration)</div><div class="ttdoc">Updates the movement of the player based on the given acceleration.</div><div class="ttdef"><b>Definition</b> <a href="player_8cpp_source.html#l00058">player.cpp:58</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="player_8h_source.html#l00037">Player::getMass()</a>, and <a class="el" href="player_8cpp_source.html#l00054">Player::updateMovement()</a>.</p>
+<p class="reference">References <a class="el" href="player_8h_source.html#l00042">Player::getMass()</a>, and <a class="el" href="player_8cpp_source.html#l00058">Player::updateMovement()</a>.</p>
 
 </div>
 </div>
@@ -223,13 +203,9 @@ Public Member Functions</h2></td></tr>
 <li><a class="el" href="physics_8cpp_source.html">physics.cpp</a></li>
 </ul>
 </div><!-- contents -->
-</div><!-- doc-content -->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><a class="el" href="class_physics_engine.html">PhysicsEngine</a></li>
-    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
 </body>
 </html>

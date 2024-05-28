@@ -43,7 +43,7 @@ public:
      * @param frictionCoeff The coefficient of friction (default: 10.0f).
      * @param g The acceleration due to gravity (default: 9.81f).
      */
-    PhysicsEngine(const float coulombConst = 8.988e-4f, const float frictionCoeff = 10.0f, const float g = 9.81f);
+    PhysicsEngine(const float coulombConst = 8.988e2f, const float frictionCoeff = 10.0f, const float g = 9.81f);
 
     /**
      * @brief Updates the player's movement.

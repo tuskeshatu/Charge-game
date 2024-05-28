@@ -5,6 +5,8 @@
 #include <memory>
 #include <algorithm>
 #include <exception>
+#include <thread>
+#include <chrono>
 
 #include "obstacle.h"
 #include "player.h"
@@ -421,6 +423,15 @@ void setStartSpeed()
     player.setSpeed(startSpeed);
 }
 
+void updateObstacles()
+{
+    // Update obstacles vector to player and animation
+    for (size_t i = 0; i < level.getObstacles().size(); i++)
+    {
+        level.getObstacles()[i]->updateObstacle();
+    }
+}
+
 // Run method with game loop
 /**
  * @brief Runs the game loop.
@@ -444,8 +455,9 @@ void runGame()
 
         // If pause is requested, display pause overlay
         if (isPause)
+        {
             displayPauseOverlay();
-
+        }
         // Set deltaTime
         deltaTime = gameClock.restart().asSeconds();
 
@@ -459,8 +471,13 @@ void runGame()
         // Run iteration of physics simulation
         physics.updatePlayer();
 
+        updateObstacles();
+
         // Render drawables
         render();
+
+        // Sleep for a short time to limit the simulation speed
+        std::this_thread::sleep_for(std::chrono::milliseconds(1 / (targetFramerate * 10)));
     }
 }
 
@@ -912,7 +929,7 @@ int main()
     window.setFramerateLimit(targetFramerate);
 
     // Loads font
-    if (!font.loadFromFile("fonts/joystix monospace.otf"))
+    if (!font.loadFromFile("resources/fonts/joystix monospace.otf"))
         throw std::runtime_error("Couldn't locate font file!");
 
     // And starts main menu

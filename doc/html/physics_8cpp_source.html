@@ -9,10 +9,6 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
-<link href="navtree.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="navtreedata.js"></script>
-<script type="text/javascript" src="navtree.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -25,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Charge game<span id="projectnumber">&#160;4.2</span>
+   <div id="projectname">Charge game<span id="projectnumber">&#160;4.3</span>
    </div>
    <div id="projectbrief">Levente Kovacs</div>
   </td>
@@ -56,23 +52,6 @@ $(function() {
 $(document).ready(function() { init_codefold(0); });
 /* @license-end */
 </script>
-</div><!-- top -->
-<div id="side-nav" class="ui-resizable side-nav-resizable">
-  <div id="nav-tree">
-    <div id="nav-tree-contents">
-      <div id="nav-sync" class="sync"></div>
-    </div>
-  </div>
-  <div id="splitbar" style="-moz-user-select:none;" 
-       class="ui-resizable-handle">
-  </div>
-</div>
-<script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('physics_8cpp_source.html',''); initResizable(); });
-/* @license-end */
-</script>
-<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -94,6 +73,11 @@ $(document).ready(function(){initNavTree('physics_8cpp_source.html',''); initRes
 </div>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
+</div>
+</div><!-- top -->
 <div class="header">
   <div class="headertitle"><div class="title">physics.cpp</div></div>
 </div><!--header-->
@@ -118,7 +102,7 @@ $(document).ready(function(){initNavTree('physics_8cpp_source.html',''); initRes
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment">// Construct based on provided constants.</span></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">// Not singleton to allow constants to change (it might be interesting gameplay as a later addition)</span></div>
 <div class="foldopen" id="foldopen00020" data-start="{" data-end="}">
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="class_physics_engine.html#a61098e6c37997d4f8daaaf7d24c5af54">   20</a></span><a class="code hl_function" href="class_physics_engine.html#a61098e6c37997d4f8daaaf7d24c5af54">PhysicsEngine::PhysicsEngine</a>(<span class="keyword">const</span> <span class="keywordtype">float</span> coulombConst, <span class="keyword">const</span> <span class="keywordtype">float</span> frictionCoeff, <span class="keyword">const</span> <span class="keywordtype">float</span> g)</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="class_physics_engine.html#a5662a5730d60f2f9159eb471e48e742d">   20</a></span><a class="code hl_function" href="class_physics_engine.html#a5662a5730d60f2f9159eb471e48e742d">PhysicsEngine::PhysicsEngine</a>(<span class="keyword">const</span> <span class="keywordtype">float</span> coulombConst, <span class="keyword">const</span> <span class="keywordtype">float</span> frictionCoeff, <span class="keyword">const</span> <span class="keywordtype">float</span> g)</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    : k(coulombConst), frictionCoeff(frictionCoeff), g(g)</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>{</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>}</div>
@@ -135,112 +119,99 @@ $(document).ready(function(){initNavTree('physics_8cpp_source.html',''); initRes
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="comment">// Calculate force vector for each obstacle with the player and sum them</span></div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="comment">// Formula: F(r) = k * q_player sum(q_obstacle * (ri / abs(ri)^3))</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="comment">// Where ri is a vector pointing from the obstacle to the player</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> std::shared_ptr&lt;Obstacle&gt; &amp;obstacle : level.getObstacles())</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    {</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        <span class="comment">// r vector pointing from the obstacle to the player</span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        sf::Vector2f ri = player.<a class="code hl_function" href="class_player.html#aa2c0eeee8f9b0de87770031e1052b25d">getBody</a>()-&gt;getPosition() - obstacle.get()-&gt;getBody()-&gt;getPosition();</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        <span class="comment">// Devide ri by 1000 to get realistic distances</span></div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        ri.x /= 1000;</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        ri.y /= 1000;</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <span class="keywordtype">double</span> riLengthSquared = ri.x * ri.x + ri.y * ri.y;</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        <span class="comment">// It is divided by the cube of riLength</span></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        <span class="comment">// x component</span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        totalForce.x += obstacle.get()-&gt;getElectricCharge() * (ri.x / (riLengthSquared * std::sqrt(riLengthSquared)));</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        <span class="comment">// y component</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        totalForce.y += obstacle.get()-&gt;getElectricCharge() * (ri.y / (riLengthSquared * std::sqrt(riLengthSquared)));</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    }</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="comment">// Multiply the sum to get total force</span></div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    totalForce.x *= k * player.<a class="code hl_function" href="class_charge.html#a7b50ddee2c400e3026890cdad6050e3a">getElectricCharge</a>();</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    totalForce.y *= k * player.<a class="code hl_function" href="class_charge.html#a7b50ddee2c400e3026890cdad6050e3a">getElectricCharge</a>();</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="keywordflow">return</span> totalForce;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> std::shared_ptr&lt;Obstacle&gt; &amp;obstacle : level.getObstacles())</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    {</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        <span class="comment">// It is divided by the cube of riLength</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        <span class="comment">// x component</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        totalForce.x += obstacle.get()-&gt;getElectricCharge() * (obstacle-&gt;getVectorToPlayer().x / (obstacle-&gt;getDistanceSquaredToPlayer() * std::sqrt(obstacle-&gt;getDistanceSquaredToPlayer())));</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        <span class="comment">// y component</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        totalForce.y += obstacle.get()-&gt;getElectricCharge() * (obstacle-&gt;getVectorToPlayer().y / (obstacle-&gt;getDistanceSquaredToPlayer() * std::sqrt(obstacle-&gt;getDistanceSquaredToPlayer())));</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    }</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="comment">// Multiply the sum to get total force</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    totalForce.x *= k * player.<a class="code hl_function" href="class_charge.html#a7b50ddee2c400e3026890cdad6050e3a">getElectricCharge</a>();</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    totalForce.y *= k * player.<a class="code hl_function" href="class_charge.html#a7b50ddee2c400e3026890cdad6050e3a">getElectricCharge</a>();</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordflow">return</span> totalForce;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>}</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="comment">// Calculate friction force</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="keyword">const</span> sf::Vector2f PhysicsEngine::calculateFrictionForce()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="comment">// Friction is linearly proportional to the speed of the player (similar to drag irl)</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keywordflow">return</span> sf::Vector2f((frictionCoeff * player.<a class="code hl_function" href="class_player.html#a05e4cf43af05074675390921598f0f4f">getSpeed</a>().x / playerMaxSpeed) * player.<a class="code hl_function" href="class_player.html#a0bfc6fd693c7044f69da826a3f4fe46b">getMass</a>() * g,</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>                        (frictionCoeff * player.<a class="code hl_function" href="class_player.html#a05e4cf43af05074675390921598f0f4f">getSpeed</a>().y / playerMaxSpeed) * player.<a class="code hl_function" href="class_player.html#a0bfc6fd693c7044f69da826a3f4fe46b">getMass</a>() * g);</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>}</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="comment">// Calculate friction force</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="keyword">const</span> sf::Vector2f PhysicsEngine::calculateFrictionForce()<span class="keyword"> const</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="comment">// Friction is linearly proportional to the speed of the player (similar to drag irl)</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keywordflow">return</span> sf::Vector2f((frictionCoeff * player.<a class="code hl_function" href="class_player.html#a05e4cf43af05074675390921598f0f4f">getSpeed</a>().x / playerMaxSpeed) * player.<a class="code hl_function" href="class_player.html#a0bfc6fd693c7044f69da826a3f4fe46b">getMass</a>() * g,</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>                        (frictionCoeff * player.<a class="code hl_function" href="class_player.html#a05e4cf43af05074675390921598f0f4f">getSpeed</a>().y / playerMaxSpeed) * player.<a class="code hl_function" href="class_player.html#a0bfc6fd693c7044f69da826a3f4fe46b">getMass</a>() * g);</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>}</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="comment">// Checks for collisions between Player and walls and obstacles.</span></div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="keywordtype">void</span> PhysicsEngine::checkCollision()</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>{</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="comment">// Get player position</span></div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keyword">const</span> sf::Vector2f playerPos(player.<a class="code hl_function" href="class_player.html#aa2c0eeee8f9b0de87770031e1052b25d">getBody</a>()-&gt;getPosition());</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="comment">// Check for each obstacle</span></div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> std::shared_ptr&lt;Obstacle&gt; &amp;obstacle : level.getObstacles())</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    {</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        sf::Vector2f obstaclePos(obstacle.get()-&gt;getBody()-&gt;getPosition());</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        <span class="comment">// If the length of the vector between the obstacle and the player is shorter than the radius they are colliding</span></div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        <span class="comment">// To avoid calculating sqrt basically: x^2+y^2 &lt;= (r1 + r2)^2</span></div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        <span class="keywordflow">if</span> ((playerPos.x - obstaclePos.x) * (playerPos.x - obstaclePos.x) + (playerPos.y - obstaclePos.y) * (playerPos.y - obstaclePos.y) &lt;= (player.<a class="code hl_function" href="class_player.html#aa2c0eeee8f9b0de87770031e1052b25d">getBody</a>()-&gt;getRadius() + obstacle.get()-&gt;getBody()-&gt;getRadius()) * (player.<a class="code hl_function" href="class_player.html#aa2c0eeee8f9b0de87770031e1052b25d">getBody</a>()-&gt;getRadius() + obstacle.get()-&gt;getBody()-&gt;getRadius()))</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>            isPause = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    }</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <span class="comment">// Check collision with walls of the window, simulate perfectly elastic collision, where walls have infinite weight </span></div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <span class="comment">// So just set the corresponding component of player&#39;s speed to its opposite</span></div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    sf::Vector2f windowSize(window.getSize());</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    sf::Vector2f playerSpeed(player.<a class="code hl_function" href="class_player.html#a05e4cf43af05074675390921598f0f4f">getSpeed</a>());</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <span class="keywordflow">if</span> (playerPos.x &lt; 0 || playerPos.x &gt; windowSize.x)</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        playerSpeed.x = -playerSpeed.x;</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    <span class="keywordflow">if</span> (playerPos.y &lt; 0 || playerPos.y &gt; windowSize.y)</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>        playerSpeed.y = -playerSpeed.y;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="comment">// Checks for collisions between Player and walls and obstacles.</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="keywordtype">void</span> PhysicsEngine::checkCollision()</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>{</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="comment">// Get player position</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keyword">const</span> sf::Vector2f playerPos(player.<a class="code hl_function" href="class_player.html#aa2c0eeee8f9b0de87770031e1052b25d">getBody</a>()-&gt;getPosition());</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="comment">// Check for each obstacle</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> std::shared_ptr&lt;Obstacle&gt; &amp;obstacle : level.getObstacles())</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    {</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        <span class="comment">// Check if the distance between player and obstacle is less than the sum of their radii</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        <span class="keywordflow">if</span> (obstacle-&gt;getDistanceSquaredToPlayer() &lt; (player.<a class="code hl_function" href="class_player.html#a5155abdb47812fef97762992b3249515">getCollisionRadius</a>() + obstacle-&gt;getCollisionRadius()) * (player.<a class="code hl_function" href="class_player.html#a5155abdb47812fef97762992b3249515">getCollisionRadius</a>() + obstacle-&gt;getCollisionRadius()))</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>            isPause = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    }</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="comment">// Check collision with walls of the window, simulate perfectly elastic collision, where walls have infinite weight </span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="comment">// So just set the corresponding component of player&#39;s speed to its opposite</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    sf::Vector2f windowSize(window.getSize());</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    sf::Vector2f playerSpeed(player.<a class="code hl_function" href="class_player.html#a05e4cf43af05074675390921598f0f4f">getSpeed</a>());</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="keywordflow">if</span> (playerPos.x &lt; 0 || playerPos.x &gt; windowSize.x)</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        playerSpeed.x = -playerSpeed.x;</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="keywordflow">if</span> (playerPos.y &lt; 0 || playerPos.y &gt; windowSize.y)</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>        playerSpeed.y = -playerSpeed.y;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="comment">// And finally set the speed</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    player.<a class="code hl_function" href="class_player.html#a91ca3d6f7f27d30df2fca24c7280ecfd">setSpeed</a>(playerSpeed);</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>}</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="comment">// Update player movement</span></div>
+<div class="foldopen" id="foldopen00086" data-start="{" data-end="}">
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="class_physics_engine.html#afc167b9e7334f263685e611696521832">   86</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_physics_engine.html#afc167b9e7334f263685e611696521832">PhysicsEngine::updatePlayer</a>()</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>{</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    <span class="comment">// Initialize total force</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    sf::Vector2f totalForce(0.0, 0.0);</div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <span class="comment">// And finally set the speed</span></div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    player.<a class="code hl_function" href="class_player.html#a91ca3d6f7f27d30df2fca24c7280ecfd">setSpeed</a>(playerSpeed);</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>}</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="comment">// Update player movement</span></div>
-<div class="foldopen" id="foldopen00096" data-start="{" data-end="}">
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno"><a class="line" href="class_physics_engine.html#afc167b9e7334f263685e611696521832">   96</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="class_physics_engine.html#afc167b9e7334f263685e611696521832">PhysicsEngine::updatePlayer</a>()</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>{</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="comment">// Initialize total force</span></div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    sf::Vector2f totalForce(0.0, 0.0);</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <span class="comment">// Add the electric part</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    totalForce += calculateElectricForce();</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="comment">// Subtract a friction force proportionally linked to the speed</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>     totalForce -= calculateFrictionForce();</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="keywordflow">if</span> (debug == 2)</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        std::cout &lt;&lt; <span class="stringliteral">&quot;total force:\t&quot;</span> &lt;&lt; std::sqrt(totalForce.x * totalForce.x + totalForce.y * totalForce.y)</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                  &lt;&lt; <span class="stringliteral">&quot;\t\tx: &quot;</span> &lt;&lt; totalForce.x &lt;&lt; <span class="stringliteral">&quot;\ty: &quot;</span> &lt;&lt; totalForce.y &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="comment">// Add the electric part</span></div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    totalForce += calculateElectricForce();</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="comment">// Subtract a friction force proportionally linked to the speed</span></div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    totalForce -= calculateFrictionForce();</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="keywordflow">if</span> (debug == 2)</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        std::cout &lt;&lt; <span class="stringliteral">&quot;total force:\t&quot;</span> &lt;&lt; std::sqrt(totalForce.x * totalForce.x + totalForce.y * totalForce.y)</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>                  &lt;&lt; <span class="stringliteral">&quot;\t\tx: &quot;</span> &lt;&lt; totalForce.x &lt;&lt; <span class="stringliteral">&quot;\ty: &quot;</span> &lt;&lt; totalForce.y &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <span class="comment">// To get acceleration divide force by mass</span></div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    sf::Vector2f acceleration(0.0, 0.0);</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    acceleration.x = totalForce.x / player.<a class="code hl_function" href="class_player.html#a0bfc6fd693c7044f69da826a3f4fe46b">getMass</a>();</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    acceleration.y = totalForce.y / player.<a class="code hl_function" href="class_player.html#a0bfc6fd693c7044f69da826a3f4fe46b">getMass</a>();</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    <span class="comment">// Update player movement</span></div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    player.<a class="code hl_function" href="class_player.html#ad851e8ddcfd4f35835aa80307e9934b5">updateMovement</a>(acceleration);</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    </div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    <span class="comment">// And check for collisions</span></div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    checkCollision();</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>}</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="comment">// To get acceleration divide force by mass</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    sf::Vector2f acceleration(0.0, 0.0);</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    acceleration.x = totalForce.x / player.<a class="code hl_function" href="class_player.html#a0bfc6fd693c7044f69da826a3f4fe46b">getMass</a>();</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    acceleration.y = totalForce.y / player.<a class="code hl_function" href="class_player.html#a0bfc6fd693c7044f69da826a3f4fe46b">getMass</a>();</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <span class="comment">// Update player movement</span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    player.<a class="code hl_function" href="class_player.html#ad851e8ddcfd4f35835aa80307e9934b5">updateMovement</a>(acceleration);</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    </div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    <span class="comment">// And check for collisions</span></div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    checkCollision();</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>}</div>
 </div>
 <div class="ttc" id="aclass_charge_html_a7b50ddee2c400e3026890cdad6050e3a"><div class="ttname"><a href="class_charge.html#a7b50ddee2c400e3026890cdad6050e3a">Charge::getElectricCharge</a></div><div class="ttdeci">double getElectricCharge() const</div><div class="ttdoc">Gets the electric charge of the charge.</div><div class="ttdef"><b>Definition</b> <a href="charge_8h_source.html#l00053">charge.h:53</a></div></div>
 <div class="ttc" id="aclass_level_html"><div class="ttname"><a href="class_level.html">Level</a></div><div class="ttdoc">Represents a game level.</div><div class="ttdef"><b>Definition</b> <a href="level_8h_source.html#l00017">level.h:18</a></div></div>
-<div class="ttc" id="aclass_physics_engine_html_a61098e6c37997d4f8daaaf7d24c5af54"><div class="ttname"><a href="class_physics_engine.html#a61098e6c37997d4f8daaaf7d24c5af54">PhysicsEngine::PhysicsEngine</a></div><div class="ttdeci">PhysicsEngine(const float coulombConst=8.988e-4f, const float frictionCoeff=10.0f, const float g=9.81f)</div><div class="ttdoc">Constructs a new PhysicsEngine object.</div><div class="ttdef"><b>Definition</b> <a href="physics_8cpp_source.html#l00020">physics.cpp:20</a></div></div>
-<div class="ttc" id="aclass_physics_engine_html_afc167b9e7334f263685e611696521832"><div class="ttname"><a href="class_physics_engine.html#afc167b9e7334f263685e611696521832">PhysicsEngine::updatePlayer</a></div><div class="ttdeci">void updatePlayer()</div><div class="ttdoc">Updates the player's movement.</div><div class="ttdef"><b>Definition</b> <a href="physics_8cpp_source.html#l00096">physics.cpp:96</a></div></div>
-<div class="ttc" id="aclass_player_html"><div class="ttname"><a href="class_player.html">Player</a></div><div class="ttdoc">Represents a player in the game.</div><div class="ttdef"><b>Definition</b> <a href="player_8h_source.html#l00014">player.h:15</a></div></div>
-<div class="ttc" id="aclass_player_html_a05e4cf43af05074675390921598f0f4f"><div class="ttname"><a href="class_player.html#a05e4cf43af05074675390921598f0f4f">Player::getSpeed</a></div><div class="ttdeci">sf::Vector2f getSpeed() const</div><div class="ttdoc">Gets the speed of the player.</div><div class="ttdef"><b>Definition</b> <a href="player_8h_source.html#l00044">player.h:44</a></div></div>
-<div class="ttc" id="aclass_player_html_a0bfc6fd693c7044f69da826a3f4fe46b"><div class="ttname"><a href="class_player.html#a0bfc6fd693c7044f69da826a3f4fe46b">Player::getMass</a></div><div class="ttdeci">const double getMass() const</div><div class="ttdoc">Gets the mass of the player.</div><div class="ttdef"><b>Definition</b> <a href="player_8h_source.html#l00037">player.h:37</a></div></div>
-<div class="ttc" id="aclass_player_html_a91ca3d6f7f27d30df2fca24c7280ecfd"><div class="ttname"><a href="class_player.html#a91ca3d6f7f27d30df2fca24c7280ecfd">Player::setSpeed</a></div><div class="ttdeci">void setSpeed(const sf::Vector2f &amp;newSpeed)</div><div class="ttdoc">Sets the speed of the player.</div><div class="ttdef"><b>Definition</b> <a href="player_8cpp_source.html#l00040">player.cpp:40</a></div></div>
-<div class="ttc" id="aclass_player_html_aa2c0eeee8f9b0de87770031e1052b25d"><div class="ttname"><a href="class_player.html#aa2c0eeee8f9b0de87770031e1052b25d">Player::getBody</a></div><div class="ttdeci">const std::shared_ptr&lt; sf::CircleShape &gt; &amp; getBody() const override</div><div class="ttdoc">Gets the body shape of the player.</div><div class="ttdef"><b>Definition</b> <a href="player_8h_source.html#l00051">player.h:51</a></div></div>
-<div class="ttc" id="aclass_player_html_ad851e8ddcfd4f35835aa80307e9934b5"><div class="ttname"><a href="class_player.html#ad851e8ddcfd4f35835aa80307e9934b5">Player::updateMovement</a></div><div class="ttdeci">void updateMovement(const sf::Vector2f &amp;acceleration)</div><div class="ttdoc">Updates the movement of the player based on the given acceleration.</div><div class="ttdef"><b>Definition</b> <a href="player_8cpp_source.html#l00054">player.cpp:54</a></div></div>
+<div class="ttc" id="aclass_physics_engine_html_a5662a5730d60f2f9159eb471e48e742d"><div class="ttname"><a href="class_physics_engine.html#a5662a5730d60f2f9159eb471e48e742d">PhysicsEngine::PhysicsEngine</a></div><div class="ttdeci">PhysicsEngine(const float coulombConst=8.988e2f, const float frictionCoeff=10.0f, const float g=9.81f)</div><div class="ttdoc">Constructs a new PhysicsEngine object.</div><div class="ttdef"><b>Definition</b> <a href="physics_8cpp_source.html#l00020">physics.cpp:20</a></div></div>
+<div class="ttc" id="aclass_physics_engine_html_afc167b9e7334f263685e611696521832"><div class="ttname"><a href="class_physics_engine.html#afc167b9e7334f263685e611696521832">PhysicsEngine::updatePlayer</a></div><div class="ttdeci">void updatePlayer()</div><div class="ttdoc">Updates the player's movement.</div><div class="ttdef"><b>Definition</b> <a href="physics_8cpp_source.html#l00086">physics.cpp:86</a></div></div>
+<div class="ttc" id="aclass_player_html"><div class="ttname"><a href="class_player.html">Player</a></div><div class="ttdoc">Represents a player in the game.</div><div class="ttdef"><b>Definition</b> <a href="player_8h_source.html#l00015">player.h:16</a></div></div>
+<div class="ttc" id="aclass_player_html_a05e4cf43af05074675390921598f0f4f"><div class="ttname"><a href="class_player.html#a05e4cf43af05074675390921598f0f4f">Player::getSpeed</a></div><div class="ttdeci">sf::Vector2f getSpeed() const</div><div class="ttdoc">Gets the speed of the player.</div><div class="ttdef"><b>Definition</b> <a href="player_8h_source.html#l00049">player.h:49</a></div></div>
+<div class="ttc" id="aclass_player_html_a0bfc6fd693c7044f69da826a3f4fe46b"><div class="ttname"><a href="class_player.html#a0bfc6fd693c7044f69da826a3f4fe46b">Player::getMass</a></div><div class="ttdeci">const double getMass() const</div><div class="ttdoc">Gets the mass of the player.</div><div class="ttdef"><b>Definition</b> <a href="player_8h_source.html#l00042">player.h:42</a></div></div>
+<div class="ttc" id="aclass_player_html_a5155abdb47812fef97762992b3249515"><div class="ttname"><a href="class_player.html#a5155abdb47812fef97762992b3249515">Player::getCollisionRadius</a></div><div class="ttdeci">const float getCollisionRadius() const</div><div class="ttdoc">Gets the collision box of the player.</div><div class="ttdef"><b>Definition</b> <a href="player_8h_source.html#l00056">player.h:56</a></div></div>
+<div class="ttc" id="aclass_player_html_a91ca3d6f7f27d30df2fca24c7280ecfd"><div class="ttname"><a href="class_player.html#a91ca3d6f7f27d30df2fca24c7280ecfd">Player::setSpeed</a></div><div class="ttdeci">void setSpeed(const sf::Vector2f &amp;newSpeed)</div><div class="ttdoc">Sets the speed of the player.</div><div class="ttdef"><b>Definition</b> <a href="player_8cpp_source.html#l00044">player.cpp:44</a></div></div>
+<div class="ttc" id="aclass_player_html_aa2c0eeee8f9b0de87770031e1052b25d"><div class="ttname"><a href="class_player.html#aa2c0eeee8f9b0de87770031e1052b25d">Player::getBody</a></div><div class="ttdeci">const std::shared_ptr&lt; sf::CircleShape &gt; &amp; getBody() const override</div><div class="ttdoc">Gets the body shape of the player.</div><div class="ttdef"><b>Definition</b> <a href="player_8h_source.html#l00063">player.h:63</a></div></div>
+<div class="ttc" id="aclass_player_html_ad851e8ddcfd4f35835aa80307e9934b5"><div class="ttname"><a href="class_player.html#ad851e8ddcfd4f35835aa80307e9934b5">Player::updateMovement</a></div><div class="ttdeci">void updateMovement(const sf::Vector2f &amp;acceleration)</div><div class="ttdoc">Updates the movement of the player based on the given acceleration.</div><div class="ttdef"><b>Definition</b> <a href="player_8cpp_source.html#l00058">player.cpp:58</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
-</div><!-- doc-content -->
 <!-- start footer part -->
-<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
-  <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><b>physics.cpp</b></li>
-    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
-  </ul>
-</div>
+<hr class="footer"/><address class="footer"><small>
+Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
 </body>
 </html>

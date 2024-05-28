@@ -33,21 +33,13 @@ const sf::Vector2f PhysicsEngine::calculateElectricForce() const
 
     // Calculate force vector for each obstacle with the player and sum them
     // Formula: F(r) = k * q_player sum(q_obstacle * (ri / abs(ri)^3))
-    // Where ri is a vector pointing from the obstacle to the player
     for (const std::shared_ptr<Obstacle> &obstacle : level.getObstacles())
     {
-        // r vector pointing from the obstacle to the player
-        sf::Vector2f ri = player.getBody()->getPosition() - obstacle.get()->getBody()->getPosition();
-        // Devide ri by 1000 to get realistic distances
-        ri.x /= 1000;
-        ri.y /= 1000;
-        double riLengthSquared = ri.x * ri.x + ri.y * ri.y;
-
         // It is divided by the cube of riLength
         // x component
-        totalForce.x += obstacle.get()->getElectricCharge() * (ri.x / (riLengthSquared * std::sqrt(riLengthSquared)));
+        totalForce.x += obstacle.get()->getElectricCharge() * (obstacle->getVectorToPlayer().x / (obstacle->getDistanceSquaredToPlayer() * std::sqrt(obstacle->getDistanceSquaredToPlayer())));
         // y component
-        totalForce.y += obstacle.get()->getElectricCharge() * (ri.y / (riLengthSquared * std::sqrt(riLengthSquared)));
+        totalForce.y += obstacle.get()->getElectricCharge() * (obstacle->getVectorToPlayer().y / (obstacle->getDistanceSquaredToPlayer() * std::sqrt(obstacle->getDistanceSquaredToPlayer())));
     }
     // Multiply the sum to get total force
     totalForce.x *= k * player.getElectricCharge();
@@ -72,10 +64,8 @@ void PhysicsEngine::checkCollision()
     // Check for each obstacle
     for (const std::shared_ptr<Obstacle> &obstacle : level.getObstacles())
     {
-        sf::Vector2f obstaclePos(obstacle.get()->getBody()->getPosition());
-        // If the length of the vector between the obstacle and the player is shorter than the radius they are colliding
-        // To avoid calculating sqrt basically: x^2+y^2 <= (r1 + r2)^2
-        if ((playerPos.x - obstaclePos.x) * (playerPos.x - obstaclePos.x) + (playerPos.y - obstaclePos.y) * (playerPos.y - obstaclePos.y) <= (player.getCollisionRadius() + obstacle.get()->getCollisionRadius()) * (player.getCollisionRadius() + obstacle.get()->getCollisionRadius()))
+        // Check if the distance between player and obstacle is less than the sum of their radii
+        if (obstacle->getDistanceSquaredToPlayer() < (player.getCollisionRadius() + obstacle->getCollisionRadius()) * (player.getCollisionRadius() + obstacle->getCollisionRadius()))
             isPause = true;
     }
 
@@ -102,7 +92,7 @@ void PhysicsEngine::updatePlayer()
     totalForce += calculateElectricForce();
 
     // Subtract a friction force proportionally linked to the speed
-    totalForce -= calculateFrictionForce();
+     totalForce -= calculateFrictionForce();
 
     if (debug == 2)
         std::cout << "total force:\t" << std::sqrt(totalForce.x * totalForce.x + totalForce.y * totalForce.y)

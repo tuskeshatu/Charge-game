@@ -9,6 +9,7 @@
 // 4:   Print starting speed vector dragged out with mouse
 // 5:   Debug LevelManager: level loading/saving
 // 6:   Display menu items
+// 7:   Print obstacle positions relative to player
 
 const char debug = 0;
 

@@ -20,8 +20,8 @@ Level::Level(const std::string &levelName, const sf::Vector2u &levelSize, const 
 // Sets name of level. Max character limit defined in settings.h
 const bool Level::setName(const std::string& newName)
 {
-    // New name can't be too long or empty
-    if (newName.length() > levelNameCharLimit || newName.empty())
+    // New name can't be too long or empty or "Empty Level"
+    if (newName.length() > levelNameCharLimit || newName.empty() || newName == "Empty Level" || newName == "empty level" || newName == "Empty level" || newName == "empty Level")
         return false;
 
     name = newName;

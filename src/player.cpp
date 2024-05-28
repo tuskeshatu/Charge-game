@@ -1,8 +1,10 @@
 #include <iostream>
 #include <SFML\Graphics.hpp>
 #include <cmath>
+
 #include "settings.h"
 #include "player.h"
+#include "playerAnimation.h"
 
 extern const char debug;
 extern const float playerMaxSpeed;
@@ -10,19 +12,13 @@ extern float deltaTime;
 
 extern sf::RenderWindow window;
 
-sf::Texture Player::playerTexture;
-
 // Create body of player and set physical traits
 Player::Player(float radius, double charge, double mass, sf::Vector2f pos)
     : Charge(charge), speed(0.0f, 0.0f), mass(mass), collisionRadius(radius), body(std::make_shared<sf::CircleShape>(radius * 4.0f))
-{
-    // Load texture
-    if (!playerTexture.loadFromFile("textures/player_texture.bmp"))
-        throw std::runtime_error("Player: Could not load player texture");
-    
-    // Color of player is red for now
+{   
+    // Color of player is white
     body->setFillColor(sf::Color::White);
-    body->setTexture(&playerTexture);
+    body->setTexture(animation.getTexture());
 
     // Set position with setter to get protection for out of bounds type of stuff
     body->setOrigin(radius * 4.0f, radius * 4.0f);
@@ -84,4 +80,7 @@ void Player::updateMovement(const sf::Vector2f &acceleration)
 
     // Update players position with deltaPos
     body->move(deltaPos);
+
+    // Update player animation
+    animation.applyTransform(*this);
 }

@@ -6,6 +6,19 @@
 
 /' Objects '/
 
+abstract class Animation {
+	+Animation(Type type)
+	+type : Type
+	+getTexture() : sf::Texture* {query}
+	#{static} isLoaded : static bool
+	#{static} attractTexture : static std::shared_ptr<sf::Texture>
+	#{static} playerTexture : static std::shared_ptr<sf::Texture>
+	#{static} repulseTexture : static std::shared_ptr<sf::Texture>
+	#texture : std::shared_ptr<sf::Texture>
+	+{abstract} applyTransform(Charge& toTransform) : void {query}
+}
+
+
 abstract class Charge {
 	+Charge(const double charge)
 	-electricCharge : double
@@ -51,9 +64,26 @@ class LevelManager {
 
 class Obstacle {
 	+Obstacle(const float radius, const double charge, const sf::Vector2f& pos)
+	-animation : ObstacleAnimation
+	-collisionBox : const float
+	-distanceSquaredToPlayer : float
+	+getCollisionRadius() : float {query}
+	+getDistanceSquaredToPlayer() : float {query}
+	-vectorToPlayer : sf::Vector2f
+	+getVectorToPlayer() : sf::Vector2f& {query}
 	-body : std::shared_ptr<sf::CircleShape>
 	+getBody() : std::shared_ptr<sf::CircleShape>& {query}
 	+setPosition(sf::Vector2f& newPos) : void
+	-updateAnimation() : void
+	-updateDistanceSquaredToPlayer() : void
+	+updateObstacle() : void
+	-updateVectorToPlayer() : void
+}
+
+
+class ObstacleAnimation {
+	+ObstacleAnimation(const Animation::Type type)
+	+applyTransform(Charge& toTransform) : void {query}
 }
 
 
@@ -71,8 +101,11 @@ class PhysicsEngine {
 
 class Player {
 	+Player(float radius, double charge, double mass, sf::Vector2f pos)
+	-animation : PlayerAnimation
 	-mass : const double
+	-collisionRadius : const float
 	+getMass() : double {query}
+	+getCollisionRadius() : float {query}
 	+getSpeed() : sf::Vector2f {query}
 	-speed : sf::Vector2f
 	-body : std::shared_ptr<sf::CircleShape>
@@ -83,10 +116,29 @@ class Player {
 }
 
 
+class PlayerAnimation {
+	+PlayerAnimation()
+	+applyTransform(Charge& toTransform) : void {query}
+}
+
+
+enum Animation::Type {
+	AttractObstacle
+	Player
+	RepulseObstacle
+}
+
+
 
 
 
 /' Inheritance relationships '/
+
+.Animation <|-- .ObstacleAnimation
+
+
+.Animation <|-- .PlayerAnimation
+
 
 .Charge <|-- .Obstacle
 
@@ -102,11 +154,20 @@ class Player {
 .Level *-- .Obstacle
 
 
+.Obstacle *-- .ObstacleAnimation
+
+
+.Player *-- .PlayerAnimation
+
+
 
 
 
 
 /' Nested objects '/
+
+.Animation +-- .Animation::Type
+
 
 
 
